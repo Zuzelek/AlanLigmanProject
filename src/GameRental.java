@@ -31,11 +31,7 @@ public class GameRental extends JFrame implements ActionListener {
         addGameButton.setFont(new Font("Arial",Font.BOLD,13));
         addGameButton.setSize(125,50);
         addGameButton.setLocation(60,150);
-        addGameButton.setFocusPainted(false);
-        addGameButton.setBorder(BorderFactory.createEmptyBorder(5,2,5,2)); // Especially important
-
-
-        addGameButton.setLocation(25,50);
+        addGameButton.setLocation(25,575);
         gamePanel.add(addGameButton);
 
         //REMOVE GAME BUTTON
@@ -45,7 +41,7 @@ public class GameRental extends JFrame implements ActionListener {
         removeGameButton.setForeground(new Color(51,153,255));
         removeGameButton.setFont(new Font("Arial",Font.BOLD,13));
         removeGameButton.setSize(135,50);
-        removeGameButton.setLocation(175,50);
+        removeGameButton.setLocation(175,575);
         gamePanel.add(removeGameButton);
 
         //VIEW GAME BUTTON
@@ -54,14 +50,14 @@ public class GameRental extends JFrame implements ActionListener {
         viewGameButton.setBackground(Color.LIGHT_GRAY);
         viewGameButton.setFont(new Font("Arial",Font.BOLD,13));
         viewGameButton.setSize(125,50);
-        viewGameButton.setLocation(335,50);
-
+        viewGameButton.setLocation(335,575);
         gamePanel.add(viewGameButton);
 
+        //NEED TO CHANGE IT TO BACKGROUND IMG INSTEAD!!!!!!!!!
         logoImage = new JLabel();
         logoImage.setIcon(new ImageIcon("C:\\Users\\t00223033\\IdeaProjects\\AlanLigmanProject\\src\\GameRentalLogo-removebg-preview.png"));
         logoImage.setSize(350,450);
-        logoImage.setLocation(60,75);
+        logoImage.setLocation(60,125);
         //logoImage.setBounds(50,150);
         gamePanel.add(logoImage);
 
@@ -69,9 +65,7 @@ public class GameRental extends JFrame implements ActionListener {
         systemFrame.setSize(500, 700);
         systemFrame.setLocationRelativeTo(null);
         systemFrame.setResizable(false);
-
         systemFrame.add(gamePanel);
-        //setIconImage(new ImageIcon(getClass().getResource("bf2042.jpg")).getImage());
 
         systemFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         systemFrame.setVisible(true);
