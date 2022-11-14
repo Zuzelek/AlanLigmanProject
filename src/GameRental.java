@@ -99,7 +99,7 @@ public class GameRental extends JFrame implements ActionListener {
 
         //NEED TO CHANGE IT TO BACKGROUND IMG INSTEAD!!!!!!!!!
         logoImage = new JLabel();
-        logoImage.setIcon(new ImageIcon("src/GameRentalMM.png"));
+        logoImage.setIcon(new ImageIcon("src/gamePad.png"));
         logoImage.setSize(350,450);
         logoImage.setLocation(60,100);
         //logoImage.setBounds(50,150);
@@ -121,6 +121,23 @@ public class GameRental extends JFrame implements ActionListener {
     }
     public void addGame(){
         String gameTitle = JOptionPane.showInputDialog("Please enter the game title: ");
+        boolean valid = false;
+        while(!valid) {
+                for (int i = 0; i < gameTitle.length(); i++) {
+                    if (Character.isDigit(gameTitle.charAt(i)))
+                    {
+                        valid = true;
+                    } else
+                        gameTitle = JOptionPane.showInputDialog("Invalid Game Title, please re-enter");
+                }
+        }
+        int gameReleaseYear = Integer.parseInt(JOptionPane.showInputDialog("Please enter the release year: "));
+        Object[] gameCategories = {"Sandbox", "Shooters", "Role-playing","Simulation and sports","Puzzlers and party games","Action-adventure","Survival and Horror","Platformer"};
+        Object selectionObject = JOptionPane.showInputDialog(null, "Choose", "Menu", JOptionPane.PLAIN_MESSAGE, null, gameCategories, gameCategories[0]);
+        int gamePrice = Integer.parseInt(JOptionPane.showInputDialog("Please enter the price of the game"));
+
+
+
     }
     public void removeGameButton(){
 
