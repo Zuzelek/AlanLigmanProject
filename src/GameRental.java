@@ -21,9 +21,16 @@ public class GameRental extends JFrame implements ActionListener {
     private JMenu mainMenuJMenuMembers, mainMenuJMenuGames;
     private JMenuItem mainMenuJMenuAddMembers, mainMenuJMenuViewMembers, mainMenuJMenuRemoveMembers,
                       mainMenuJMenuAddGame, mainMenuJMenuViewGames, mainMenuJMenuRemoveGame;
+
+    private Game game;
+    private Employee employee;
+    private Customer customer;
+
     ArrayList<Game> games = new ArrayList<>();
     ArrayList<Employee> employees = new ArrayList<>();
     ArrayList<Customer> customers = new ArrayList<>();
+
+
 
 
     public GameRental() {
@@ -128,6 +135,8 @@ public class GameRental extends JFrame implements ActionListener {
         String gameTitle = JOptionPane.showInputDialog("Please enter the game title: ");
         gameReleaseYear = JOptionPane.showInputDialog("Please enter the release year: ");
         gamePrice = JOptionPane.showInputDialog("Please enter the price of the game");
+        Object[] gameCategories = {"Sandbox", "Shooters", "Role-playing","Simulation and sports","Puzzlers and party games","Action-adventure","Survival and Horror","Platformer"};
+        Object selectionObject = JOptionPane.showInputDialog(null, "Choose", "Game Category, JOptionPane.PLAIN_MESSAGE, null, gameCategories, gameCategories[0]);
 
         int i;
         boolean valid = false;
@@ -161,11 +170,12 @@ public class GameRental extends JFrame implements ActionListener {
             }
             }
 
-        Object[] gameCategories = {"Sandbox", "Shooters", "Role-playing","Simulation and sports","Puzzlers and party games","Action-adventure","Survival and Horror","Platformer"};
-        Object selectionObject = JOptionPane.showInputDialog(null, "Choose", "Menu", JOptionPane.PLAIN_MESSAGE, null, gameCategories, gameCategories[0]);
 
 
 
+        this.games.add(this.game);
+    }
+    public void displayGame(){
 
     }
     public void removeGameButton(){
