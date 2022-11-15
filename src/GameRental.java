@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.border.Border;
 
@@ -20,6 +21,9 @@ public class GameRental extends JFrame implements ActionListener {
     private JMenu mainMenuJMenuMembers, mainMenuJMenuGames;
     private JMenuItem mainMenuJMenuAddMembers, mainMenuJMenuViewMembers, mainMenuJMenuRemoveMembers,
                       mainMenuJMenuAddGame, mainMenuJMenuViewGames, mainMenuJMenuRemoveGame;
+    ArrayList<Game> games = new ArrayList<>();
+    ArrayList<Employee> employees = new ArrayList<>();
+    ArrayList<Customer> customers = new ArrayList<>();
 
 
     public GameRental() {
@@ -112,7 +116,7 @@ public class GameRental extends JFrame implements ActionListener {
         systemFrame.add(gamePanel);
 
 
-        systemFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         systemFrame.setVisible(true);
     }
     public static void main(String[] args) {
@@ -120,52 +124,42 @@ public class GameRental extends JFrame implements ActionListener {
         new GameRental();
     }
     public void addGame(){
-        String gameTitle = JOptionPane.showInputDialog("Please enter the game title: ");
         String gameReleaseYear,gamePrice;
+        String gameTitle = JOptionPane.showInputDialog("Please enter the game title: ");
+        gameReleaseYear = JOptionPane.showInputDialog("Please enter the release year: ");
+        gamePrice = JOptionPane.showInputDialog("Please enter the price of the game");
+
         int i;
         boolean valid = false;
-        while(!valid) {
-                for (i = 0; i < gameTitle.length(); i++)
-                    break;
-                    if(!gameTitle.equals(""))
-                    {
-                        if(!Character.isDigit(gameTitle.charAt(i)))
-                        {
-                            gameReleaseYear = JOptionPane.showInputDialog("Please enter the release year: ");
-                            for(i=0; i<gameReleaseYear.length(); i++)
-                                break;
-                                if(gameReleaseYear.length() == 4)
-                                {
-                                    if(Character.isDigit(gameReleaseYear.charAt(i)))
-                                    {
-                                        gamePrice = JOptionPane.showInputDialog("Please enter the price of the game");
+        while(!gameTitle.equals(""))
+        {
+            valid = false;
+            while(!valid)
+            {
+                for (i = 0; i < gameReleaseYear.length(); i++)
+                {
+                    if (gameReleaseYear.length() == 4) {
+                        if (Character.isDigit(gameReleaseYear.charAt(i))) {
+                            if (gamePrice.length() == 2) {
+                                for (i = 0; i < gamePrice.length(); i++)
 
-                                        if(gamePrice.length() == 2)
-                                        {
-                                            valid = true;
-                                        }
-                                        else
-                                            gamePrice = JOptionPane.showInputDialog("Game price must be 2 digits, please re-enter");
-                                                continue;
-                                    }
-                                    else
-                                        gameReleaseYear = JOptionPane.showInputDialog("Release year must be numeric, please re-enter");
-                                            continue;
-                                }
-                                else
-                                    gameReleaseYear = JOptionPane.showInputDialog("Release year must be 4 digits long, please re-enter");
-                                        continue;
-                        }
-                        else
-                            gameTitle = JOptionPane.showInputDialog("Game title cannot be numeric, please re-enter!");
-                                continue;
-                    }
-                    else
-                        gameTitle = JOptionPane.showInputDialog("Game title cannot be empty, please re-enter");
+                                    if (Character.isDigit(gamePrice.charAt(i))) {
+                                        valid = true;
+                                    } else
+                                        gamePrice = JOptionPane.showInputDialog("Game price must be numeric, please re-enter");
+
+                            } else
+                                gamePrice = JOptionPane.showInputDialog("Game price must be 2 digits, please re-enter");
                             continue;
-
-
-        }
+                        } else
+                            gameReleaseYear = JOptionPane.showInputDialog("Release year must be numeric, please re-enter");
+                        continue;
+                    } else
+                        gameReleaseYear = JOptionPane.showInputDialog("Release year must be 4 digits long, please re-enter");
+                    continue;
+                }
+            }
+            }
 
         Object[] gameCategories = {"Sandbox", "Shooters", "Role-playing","Simulation and sports","Puzzlers and party games","Action-adventure","Survival and Horror","Platformer"};
         Object selectionObject = JOptionPane.showInputDialog(null, "Choose", "Menu", JOptionPane.PLAIN_MESSAGE, null, gameCategories, gameCategories[0]);
