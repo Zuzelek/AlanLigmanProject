@@ -136,7 +136,7 @@ public class GameRental extends JFrame implements ActionListener {
         gameReleaseYear = JOptionPane.showInputDialog("Please enter the release year: ");
         gamePrice = JOptionPane.showInputDialog("Please enter the price of the game");
         Object[] gameCategories = {"Sandbox", "Shooters", "Role-playing","Simulation and sports","Puzzlers and party games","Action-adventure","Survival and Horror","Platformer"};
-        Object selectionObject = JOptionPane.showInputDialog(null, "Choose", "Game Category, JOptionPane.PLAIN_MESSAGE, null, gameCategories, gameCategories[0]);
+        Object selectionObject = JOptionPane.showInputDialog(null, "Choose", "Game Category", JOptionPane.PLAIN_MESSAGE, null, gameCategories, gameCategories[0]);
 
         int i;
         boolean valid = false;
