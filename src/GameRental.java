@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
-import javax.swing.border.Border;
 
 
 public class GameRental extends JFrame implements ActionListener {
@@ -42,24 +41,13 @@ public class GameRental extends JFrame implements ActionListener {
         systemFrame.setJMenuBar(mainMenuJMenuBar);
 
         //MEMBERS JMENU
-        mainMenuJMenuMembers = new JMenu("Members");
-        mainMenuJMenuBar.add(mainMenuJMenuMembers);
-
-        mainMenuJMenuAddMembers = new JMenuItem("Add Member");
-        mainMenuJMenuMembers.add(mainMenuJMenuAddMembers);
-
-        mainMenuJMenuViewMembers = new JMenuItem("View Members");
-        mainMenuJMenuMembers.add(mainMenuJMenuViewMembers);
-        mainMenuJMenuMembers.addSeparator();
-
-        mainMenuJMenuRemoveMembers = new JMenuItem("Remove Member");
-        mainMenuJMenuMembers.add(mainMenuJMenuRemoveMembers);
+        createMenuMembers();
         //GAMES JMENU
         mainMenuJMenuGames = new JMenu("Games");
         mainMenuJMenuBar.add(mainMenuJMenuGames);
 
         mainMenuJMenuAddGame = new JMenuItem("Add Game");
-        mainMenuJMenuGames.add(mainMenuJMenuAddMembers);
+        mainMenuJMenuGames.add(mainMenuJMenuAddGame);
 
         mainMenuJMenuViewGames = new JMenuItem("View Games");
         mainMenuJMenuGames.add(mainMenuJMenuViewGames);
@@ -98,6 +86,7 @@ public class GameRental extends JFrame implements ActionListener {
         removeGameButton.setFont(new Font("Arial",Font.BOLD,13));
         removeGameButton.setSize(135,50);
         removeGameButton.setLocation(175,575);
+        removeGameButton.addActionListener(this);
         gamePanel.add(removeGameButton);
 
         //VIEW GAME BUTTON
@@ -107,6 +96,7 @@ public class GameRental extends JFrame implements ActionListener {
         viewGameButton.setFont(new Font("Arial",Font.BOLD,13));
         viewGameButton.setSize(125,50);
         viewGameButton.setLocation(335,575);
+        viewGameButton.addActionListener(this);
         gamePanel.add(viewGameButton);
 
         //NEED TO CHANGE IT TO BACKGROUND IMG INSTEAD!!!!!!!!!
@@ -131,16 +121,31 @@ public class GameRental extends JFrame implements ActionListener {
 
         new GameRental();
     }
-    public void addGame(){
-        String gameReleaseYear,gamePrice;
-        String gameTitle = JOptionPane.showInputDialog("Please enter the game title: ");
-        gameReleaseYear = JOptionPane.showInputDialog("Please enter the release year: ");
-        gamePrice = JOptionPane.showInputDialog("Please enter the price of the game");
-        Object[] gameCategories = {"Sandbox", "Shooters", "Role-playing","Simulation and sports","Puzzlers and party games","Action-adventure","Survival and Horror","Platformer"};
-        Object selectionObject = JOptionPane.showInputDialog(null, "Choose", "Game Category", JOptionPane.PLAIN_MESSAGE, null, gameCategories, gameCategories[0]);
+    public void createMenuMembers(){
+        mainMenuJMenuMembers = new JMenu("Members");
+        mainMenuJMenuBar.add(mainMenuJMenuMembers);
 
+        mainMenuJMenuAddMembers = new JMenuItem("Add Member");
+        mainMenuJMenuMembers.add(mainMenuJMenuAddMembers);
+
+        mainMenuJMenuViewMembers = new JMenuItem("View Members");
+        mainMenuJMenuMembers.add(mainMenuJMenuViewMembers);
+        mainMenuJMenuMembers.addSeparator();
+
+        mainMenuJMenuRemoveMembers = new JMenuItem("Remove Member");
+        mainMenuJMenuMembers.add(mainMenuJMenuRemoveMembers);
+        mainMenuJMenuMembers.addActionListener(this);
+    }
+    public void addGame(){
+        String gameTitle = JOptionPane.showInputDialog("Please enter the game title: ");
+        int gameReleaseYear = Integer.parseInt(JOptionPane.showInputDialog("Please enter the release year: "));
+        float gamePrice = Float.parseFloat(JOptionPane.showInputDialog("Please enter the price of the game"));
+        String gameCategories[] = {"Sandbox", "Shooters", "Role-playing","Simulation and sports","Puzzlers and party games","Action-adventure","Survival and Horror","Platformer"};
+        String category = (String)JOptionPane.showInputDialog(null, "Choose", "Game Category", JOptionPane.PLAIN_MESSAGE, null, gameCategories, gameCategories[0]);
+
+        this.game = new Game(gameTitle,gameReleaseYear,category,gamePrice);
         int i;
-        boolean valid = false;
+        /*boolean valid = false;
         while(!gameTitle.equals(""))
         {
             valid = false;
@@ -157,22 +162,35 @@ public class GameRental extends JFrame implements ActionListener {
                                         valid = true;
                                     } else
                                         gamePrice = JOptionPane.showInputDialog("Game price must be numeric, please re-enter");
-
                             } else
                                 gamePrice = JOptionPane.showInputDialog("Game price must be 2 digits, please re-enter");
-                            continue;
                         } else
                             gameReleaseYear = JOptionPane.showInputDialog("Release year must be numeric, please re-enter");
-                        continue;
                     } else
                         gameReleaseYear = JOptionPane.showInputDialog("Release year must be 4 digits long, please re-enter");
-                    continue;
                 }
             }
-            }
-
+            break;
+            }*/
         this.games.add(this.game);
+
     }
+    public void displayStaff() {
+        JComboBox<String> cuisineCombo = new JComboBox();
+        JTextArea output = new JTextArea();
+        output.setText("Cuisine Details:\n\n");
+        if (this.games.size() < 1) {
+            JOptionPane.showMessageDialog(null, "No cuisines is added in the system. Please 'Open' the file.", "Error", 0);
+        } else {
+            Iterator<Game> iterator = this.games.iterator();
+            while (iterator.hasNext())
+            {
+                System.out.println(iterator.next()+ " ");
+            }
+            }
+        }
+
+    /*
     public void displayGames(){
         JComboBox<String> gameComboBox = new JComboBox<>();
         JTextArea gameList = new JTextArea("Game Details");
@@ -187,12 +205,10 @@ public class GameRental extends JFrame implements ActionListener {
 
             while(gameIterator.hasNext())
             {
-
+                JOptionPane.showMessageDialog(null,gameIterator.next() + "\n","Game List",JOptionPane.INFORMATION_MESSAGE);
             }
         }
-
-
-    }
+    }*/
     public void removeGameButton(){
 
     }
@@ -218,9 +234,9 @@ public class GameRental extends JFrame implements ActionListener {
         {
             addGame();
         }
-        else if(menuOption == "Remove Game" || e.getSource() == this.removeGameButton)
+        else if(e.getSource() == this.mainMenuJMenuMembers || e.getSource() == this.viewGameButton)
         {
-            removeGameButton();
+            displayStaff();
         }
 
     }

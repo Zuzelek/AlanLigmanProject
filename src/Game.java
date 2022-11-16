@@ -1,8 +1,13 @@
-public class Game {
+import java.io.Serializable;
+
+public class Game implements Serializable {
     private String title;
     private int releaseYear;
     private String gameCategory;
     private float price;
+    public Game() {
+    this("Unknown",0000,"Unknown",0.0f);
+    }
 
     //4 Argument Constructor
     public Game(String title, int releaseYear, String gameCategory, float price)
