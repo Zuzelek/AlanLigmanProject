@@ -13,7 +13,7 @@ public class Authentication extends JFrame implements ActionListener {
     public Authentication(){
         this.setTitle("Authentication");
         this.setSize(400,250);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         this.setLocationRelativeTo(null);
         this.setResizable(false);
 
@@ -51,7 +51,7 @@ public class Authentication extends JFrame implements ActionListener {
 
         close = new JButton("Close");
 
-
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
 
     }
@@ -63,7 +63,19 @@ public class Authentication extends JFrame implements ActionListener {
                 String user = userText.getText();
                 String pass = passwordText.getText();
 
-                System.out.println(user);
+                if(!user.equals("") && !pass.equals(""))
+                {
+                    JOptionPane.showMessageDialog(null,"Welcome back "+user);
+                    GameRental rentalStart = new GameRental();
+                    rentalStart.setVisible(true);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null,"The login or password you have entered is invalid, try-again.","Invalid Credentials",JOptionPane.ERROR_MESSAGE);
+                    this.username.requestFocus();
+                    this.username.setText("");
+                    this.passwordText.setText("");
+                }
 
 
 

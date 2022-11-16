@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import javax.swing.border.Border;
 
 
@@ -123,7 +124,7 @@ public class GameRental extends JFrame implements ActionListener {
         systemFrame.add(gamePanel);
 
 
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        systemFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         systemFrame.setVisible(true);
     }
     public static void main(String[] args) {
@@ -170,12 +171,26 @@ public class GameRental extends JFrame implements ActionListener {
             }
             }
 
-
-
-
         this.games.add(this.game);
     }
-    public void displayGame(){
+    public void displayGames(){
+        JComboBox<String> gameComboBox = new JComboBox<>();
+        JTextArea gameList = new JTextArea("Game Details");
+
+        if(this.games.size() == 0)
+        {
+            JOptionPane.showMessageDialog(null,"No games have been found","Game Details",JOptionPane.ERROR_MESSAGE);
+        }
+        else
+        {
+            Iterator<Game> gameIterator = this.games.iterator();
+
+            while(gameIterator.hasNext())
+            {
+
+            }
+        }
+
 
     }
     public void removeGameButton(){
