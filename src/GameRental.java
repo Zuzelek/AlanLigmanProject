@@ -15,7 +15,7 @@ public class GameRental extends JFrame implements ActionListener {
     private JFrame systemFrame;
     private JButton addGameButton, removeGameButton,viewGameButton ;
     private JPanel gamePanel;
-    private JLabel logoImage, clockLabel;
+    private JLabel logoImage, clockLabel,test;
     private SimpleDateFormat clockFormat;
     private JMenuBar mainMenuJMenuBar;
     private JMenu mainMenuJMenuMembers, mainMenuJMenuGames;
@@ -71,7 +71,7 @@ public class GameRental extends JFrame implements ActionListener {
         addGameButton = new JButton("Add Game");
         addGameButton.setMnemonic('A');
         addGameButton.setBackground(Color.LIGHT_GRAY);
-        addGameButton.setMargin(new Insets(15,25,15,25));
+        addGameButton.setBounds(15,25,15,25);
         addGameButton.setFont(new Font("Arial",Font.BOLD,13));
         addGameButton.setSize(125,50);
         addGameButton.setLocation(25,575);
@@ -84,8 +84,7 @@ public class GameRental extends JFrame implements ActionListener {
         removeGameButton.setBackground(Color.LIGHT_GRAY);
         removeGameButton.setForeground(new Color(51,153,255));
         removeGameButton.setFont(new Font("Arial",Font.BOLD,13));
-        removeGameButton.setSize(135,50);
-        removeGameButton.setLocation(175,575);
+        removeGameButton.setBounds(175,575,135,50);
         removeGameButton.addActionListener(this);
         gamePanel.add(removeGameButton);
 
@@ -94,18 +93,22 @@ public class GameRental extends JFrame implements ActionListener {
         viewGameButton.setMnemonic(KeyEvent.VK_V);
         viewGameButton.setBackground(Color.LIGHT_GRAY);
         viewGameButton.setFont(new Font("Arial",Font.BOLD,13));
-        viewGameButton.setSize(125,50);
-        viewGameButton.setLocation(335,575);
+        viewGameButton.setBounds(335,575,125,50);
         viewGameButton.addActionListener(this);
         gamePanel.add(viewGameButton);
 
         //NEED TO CHANGE IT TO BACKGROUND IMG INSTEAD!!!!!!!!!
         logoImage = new JLabel();
         logoImage.setIcon(new ImageIcon("src/gamePad.png"));
-        logoImage.setSize(350,450);
-        logoImage.setLocation(60,100);
-        //logoImage.setBounds(50,150);
+        logoImage.setBounds(60,100,350,450);
         gamePanel.add(logoImage);
+
+        //LAST JLABEL
+
+        test = new JLabel("Hello");
+        test.setBounds(30,50,250,200);
+        test.setForeground(new Color(51,153,255));
+        gamePanel.add(test);
 
 
         systemFrame.setSize(500, 700);
@@ -138,78 +141,80 @@ public class GameRental extends JFrame implements ActionListener {
     }
     public void addGame(){
         String gameTitle = JOptionPane.showInputDialog("Please enter the game title: ");
-        int gameReleaseYear = Integer.parseInt(JOptionPane.showInputDialog("Please enter the release year: "));
-        float gamePrice = Float.parseFloat(JOptionPane.showInputDialog("Please enter the price of the game"));
+        String gameReleaseYear = JOptionPane.showInputDialog("Please enter the release year: ");
+        String gamePrice = JOptionPane.showInputDialog("Please enter the price of the game");
         String gameCategories[] = {"Sandbox", "Shooters", "Role-playing","Simulation and sports","Puzzlers and party games","Action-adventure","Survival and Horror","Platformer"};
         String category = (String)JOptionPane.showInputDialog(null, "Choose", "Game Category", JOptionPane.PLAIN_MESSAGE, null, gameCategories, gameCategories[0]);
 
-        this.game = new Game(gameTitle,gameReleaseYear,category,gamePrice);
+
         int i;
-        /*boolean valid = false;
+        boolean valid = false;
         while(!gameTitle.equals(""))
         {
             valid = false;
             while(!valid)
             {
                 for (i = 0; i < gameReleaseYear.length(); i++)
+                    break;
                 {
                     if (gameReleaseYear.length() == 4) {
                         if (Character.isDigit(gameReleaseYear.charAt(i))) {
-                            if (gamePrice.length() == 2) {
+                            if (gamePrice.length() == 2 || gamePrice.length() == 5 && gamePrice.charAt(2) == '.') {
                                 for (i = 0; i < gamePrice.length(); i++)
-
-                                    if (Character.isDigit(gamePrice.charAt(i))) {
+                                    break;
+                                    if (Character.isDigit(gamePrice.charAt(i)))
+                                    {
+                                        this.game = new Game(gameTitle,gameReleaseYear,category,gamePrice);
+                                        JOptionPane.showMessageDialog(null,"Game: "+gameTitle+" has been added to the system","Game Added",JOptionPane.INFORMATION_MESSAGE);
                                         valid = true;
+                                        continue;
                                     } else
                                         gamePrice = JOptionPane.showInputDialog("Game price must be numeric, please re-enter");
+                                            continue;
                             } else
                                 gamePrice = JOptionPane.showInputDialog("Game price must be 2 digits, please re-enter");
+                                    continue;
                         } else
                             gameReleaseYear = JOptionPane.showInputDialog("Release year must be numeric, please re-enter");
+                                continue;
                     } else
                         gameReleaseYear = JOptionPane.showInputDialog("Release year must be 4 digits long, please re-enter");
+                            continue;
                 }
             }
             break;
-            }*/
+            }
         this.games.add(this.game);
 
     }
-    public void displayStaff() {
-        JComboBox<String> cuisineCombo = new JComboBox();
-        JTextArea output = new JTextArea();
-        output.setText("Cuisine Details:\n\n");
-        if (this.games.size() < 1) {
-            JOptionPane.showMessageDialog(null, "No cuisines is added in the system. Please 'Open' the file.", "Error", 0);
-        } else {
-            Iterator<Game> iterator = this.games.iterator();
-            while (iterator.hasNext())
-            {
-                System.out.println(iterator.next()+ " ");
-            }
-            }
-        }
+    public void displayGames() {
+        JComboBox<String> gamesComboBox = new JComboBox();
+        JTextArea gameResults = new JTextArea();
+        gameResults.setText("Game Details Found in the system:\n\n");
+        try {
+            if (this.games.size() < 1) {
+                JOptionPane.showMessageDialog(null, "No games have been found in the system. Please 'Open' the file.", "Error, no games found", JOptionPane.ERROR_MESSAGE);
+            } else {
+                Iterator<Game> iterator = this.games.iterator();
+                while (iterator.hasNext())
+                    //System.out.println(iterator.next()+ " ");
+                    gamesComboBox.addItem(((Game) iterator.next()).getTitle() + "\n");
+                    JOptionPane.showMessageDialog(null, gamesComboBox, "Select a game to view it's details", JOptionPane.NO_OPTION);
+                    
+                    int comboBoxSelection = gamesComboBox.getSelectedIndex();
+                    gameResults.append(((Game) this.games.get(comboBoxSelection)).toString());
+                    JOptionPane.showMessageDialog(null, gameResults, "Game Details", JOptionPane.NO_OPTION);
 
-    /*
-    public void displayGames(){
-        JComboBox<String> gameComboBox = new JComboBox<>();
-        JTextArea gameList = new JTextArea("Game Details");
-
-        if(this.games.size() == 0)
+                
+            }
+        }catch(NullPointerException e)
         {
-            JOptionPane.showMessageDialog(null,"No games have been found","Game Details",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Game could not be loaded","Error",JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
-        else
-        {
-            Iterator<Game> gameIterator = this.games.iterator();
+        }
 
-            while(gameIterator.hasNext())
-            {
-                JOptionPane.showMessageDialog(null,gameIterator.next() + "\n","Game List",JOptionPane.INFORMATION_MESSAGE);
-            }
-        }
-    }*/
-    public void removeGameButton(){
+    public void removeGame(){
 
     }
     public void rentalClock(){
@@ -236,7 +241,7 @@ public class GameRental extends JFrame implements ActionListener {
         }
         else if(e.getSource() == this.mainMenuJMenuMembers || e.getSource() == this.viewGameButton)
         {
-            displayStaff();
+            displayGames();
         }
 
     }

@@ -2,15 +2,15 @@ import java.io.Serializable;
 
 public class Game implements Serializable {
     private String title;
-    private int releaseYear;
+    private String releaseYear;
     private String gameCategory;
-    private float price;
+    private String price;
     public Game() {
-    this("Unknown",0000,"Unknown",0.0f);
+    this("Unknown","Not given","Unknown","Unknown");
     }
 
     //4 Argument Constructor
-    public Game(String title, int releaseYear, String gameCategory, float price)
+    public Game(String title, String releaseYear, String gameCategory, String price)
     {
         setTitle(title);
         setReleaseYear(releaseYear);
@@ -21,26 +21,26 @@ public class Game implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
-    public void setReleaseYear(int releaseYear){
+    public void setReleaseYear(String releaseYear){
         this.releaseYear = releaseYear;
     }
     public void setGameCategory(String gameCategory){
         this.gameCategory = gameCategory;
     }
-    public void setPrice(float price){
+    public void setPrice(String price){
         this.price = price;
     }
     //Accessor methods
     public String getTitle(){
         return title;
     }
-    public int getReleaseYear(){
+    public String getReleaseYear(){
         return releaseYear;
     }
     public String getGameCategory() {
         return gameCategory;
     }
-    public float getPrice(){
+    public String getPrice(){
         return price;
     }
     public String toString(){
