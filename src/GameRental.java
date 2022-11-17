@@ -11,18 +11,22 @@ import java.util.Iterator;
 
 public class GameRental extends JFrame implements ActionListener {
 
-    private String clock;
+
+    private String clock,date;
     private JFrame systemFrame;
     private JButton addGameButton, removeGameButton,viewGameButton ;
     private JPanel gamePanel;
-    private JLabel logoImage, clockLabel,test;
-    private SimpleDateFormat clockFormat;
+    private JLabel logoImage, clockLabel, dateLabel;
     private JMenuBar mainMenuJMenuBar;
-    private JMenu mainMenuJMenuMembers, mainMenuJMenuGames;
-    private JMenuItem mainMenuJMenuAddMembers, mainMenuJMenuViewMembers, mainMenuJMenuRemoveMembers,
-                      mainMenuJMenuAddGame, mainMenuJMenuViewGames, mainMenuJMenuRemoveGame;
+    private JMenu mainMenuJMenuMembers, mainMenuJMenuGames, mainMenuJMenuCustomers;
+    private JMenuItem mainMenuJMenuAddMembers, mainMenuJMenuViewMembers, mainMenuJMenuRemoveMembers;
+    private JMenuItem mainMenuJMenuAddGame, mainMenuJMenuViewGames, mainMenuJMenuRemoveGame;
+    private JMenuItem mainMenuJMenuAddCustomer, mainMenuJMenuRemoveCustomer, mainMenuJMenuViewCustomers;
+
     Calendar calendar;
     SimpleDateFormat formatTime;
+    SimpleDateFormat formatDate;
+
 
     private Game game;
     private Employee employee;
@@ -36,43 +40,9 @@ public class GameRental extends JFrame implements ActionListener {
 
 
     public GameRental() {
-
         systemFrame = new JFrame("Game System");
 
-        mainMenuJMenuBar = new JMenuBar();
-        systemFrame.setJMenuBar(mainMenuJMenuBar);
-
-        //MEMBERS JMENU
-        mainMenuJMenuMembers = new JMenu("Members");
-        mainMenuJMenuBar.add(mainMenuJMenuMembers);
-
-
-        mainMenuJMenuAddMembers = new JMenuItem("Add Member");
-        mainMenuJMenuMembers.add(mainMenuJMenuAddMembers);
-
-        mainMenuJMenuViewMembers = new JMenuItem("View Members");
-        mainMenuJMenuMembers.add(mainMenuJMenuViewMembers);
-        mainMenuJMenuMembers.addSeparator();
-        mainMenuJMenuViewMembers.addActionListener(this);
-
-        mainMenuJMenuRemoveMembers = new JMenuItem("Remove Member");
-        mainMenuJMenuMembers.add(mainMenuJMenuRemoveMembers);
-        mainMenuJMenuMembers.addActionListener(this);
-        //GAMES JMENU
-        mainMenuJMenuGames = new JMenu("Games");
-        mainMenuJMenuBar.add(mainMenuJMenuGames);
-
-        mainMenuJMenuAddGame = new JMenuItem("Add Game");
-        mainMenuJMenuGames.add(mainMenuJMenuAddGame);
-        mainMenuJMenuAddGame.addActionListener(this);
-
-        mainMenuJMenuViewGames = new JMenuItem("View Games");
-        mainMenuJMenuGames.add(mainMenuJMenuViewGames);
-        mainMenuJMenuViewGames.addActionListener(this);
-
-        mainMenuJMenuRemoveGame = new JMenuItem("Remove Game");
-        mainMenuJMenuGames.add(mainMenuJMenuRemoveGame);
-        mainMenuJMenuRemoveGame.addActionListener(this);
+        displayJMenu();
 
 
         gamePanel = new JPanel();
@@ -116,18 +86,14 @@ public class GameRental extends JFrame implements ActionListener {
         viewGameButton.addActionListener(this);
         gamePanel.add(viewGameButton);
 
-        //NEED TO CHANGE IT TO BACKGROUND IMG INSTEAD!!!!!!!!!
+
         logoImage = new JLabel();
         logoImage.setIcon(new ImageIcon("src/gamePad.png"));
         logoImage.setBounds(60,100,350,450);
         gamePanel.add(logoImage);
 
         //CLOCK LABEL
-        clockLabel = new JLabel();
-        clockLabel.setBounds(200,25,120,40);
-        clockLabel.setFont(new Font("Arial",Font.BOLD,17));
-        clockLabel.setForeground(new Color(51,153,255));
-        gamePanel.add(clockLabel);
+        displayClock();
 
         systemFrame.setSize(500, 700);
         systemFrame.setLocationRelativeTo(null);
@@ -217,6 +183,76 @@ public class GameRental extends JFrame implements ActionListener {
             e.printStackTrace();
         }
         }
+    public void displayClock(){
+        clockLabel = new JLabel();
+        clockLabel.setBounds(205,25,120,40);
+        clockLabel.setFont(new Font("Arial",Font.BOLD,22));
+        clockLabel.setForeground(new Color(51,153,255));
+        gamePanel.add(clockLabel);
+
+        dateLabel = new JLabel();
+        dateLabel.setBounds(190,50,120,40);
+        dateLabel.setFont(new Font("Arial",Font.BOLD,13));
+        dateLabel.setForeground(new Color(51,153,255));
+        gamePanel.add(dateLabel);
+    }
+    public void displayJMenu(){
+        mainMenuJMenuBar = new JMenuBar();
+        systemFrame.setJMenuBar(mainMenuJMenuBar);
+
+        //MEMBERS JMENU
+        mainMenuJMenuMembers = new JMenu("Members");
+        mainMenuJMenuBar.add(mainMenuJMenuMembers);
+
+        mainMenuJMenuAddMembers = new JMenuItem("Add Member");
+        mainMenuJMenuMembers.add(mainMenuJMenuAddMembers);
+        mainMenuJMenuMembers.addSeparator();
+
+        mainMenuJMenuViewMembers = new JMenuItem("View Members");
+        mainMenuJMenuMembers.add(mainMenuJMenuViewMembers);
+        mainMenuJMenuMembers.addSeparator();
+        mainMenuJMenuViewMembers.addActionListener(this);
+
+        mainMenuJMenuRemoveMembers = new JMenuItem("Remove Member");
+        mainMenuJMenuMembers.add(mainMenuJMenuRemoveMembers);
+        mainMenuJMenuMembers.addActionListener(this);
+        //GAMES JMENU
+        mainMenuJMenuGames = new JMenu("Games");
+        mainMenuJMenuBar.add(mainMenuJMenuGames);
+
+        mainMenuJMenuAddGame = new JMenuItem("Add Game");
+        mainMenuJMenuGames.add(mainMenuJMenuAddGame);
+        mainMenuJMenuGames.addSeparator();
+        mainMenuJMenuAddGame.addActionListener(this);
+
+        mainMenuJMenuViewGames = new JMenuItem("View Games");
+        mainMenuJMenuGames.add(mainMenuJMenuViewGames);
+        mainMenuJMenuGames.addSeparator();
+        mainMenuJMenuViewGames.addActionListener(this);
+
+        mainMenuJMenuRemoveGame = new JMenuItem("Remove Game");
+        mainMenuJMenuGames.add(mainMenuJMenuRemoveGame);
+        mainMenuJMenuRemoveGame.addActionListener(this);
+        //CUSTOMERS JMENU
+        mainMenuJMenuCustomers = new JMenu("Customer");
+
+        mainMenuJMenuAddCustomer = new JMenuItem("Add Customer");
+        mainMenuJMenuCustomers.add(mainMenuJMenuAddCustomer);
+        mainMenuJMenuCustomers.addSeparator();
+        mainMenuJMenuAddCustomer.addActionListener(this);
+
+        mainMenuJMenuViewCustomers = new JMenuItem("View Customers");
+        mainMenuJMenuCustomers.add(mainMenuJMenuViewCustomers);
+        mainMenuJMenuCustomers.addSeparator();
+        mainMenuJMenuViewCustomers.addActionListener(this);
+
+        mainMenuJMenuRemoveCustomer = new JMenuItem("Remove Customer");
+        mainMenuJMenuCustomers.add(mainMenuJMenuRemoveCustomer);
+        mainMenuJMenuRemoveMembers.addActionListener(this);
+
+        mainMenuJMenuBar.add(mainMenuJMenuCustomers);
+
+    }
 
     public void removeGame(){
         JComboBox gamesList = new JComboBox();
@@ -234,17 +270,23 @@ public class GameRental extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null, "Selected game has been removed", "Game Removed", JOptionPane.INFORMATION_MESSAGE);
         }
         }
+
+
     public void rentalClock(){
 
         while(true) {
-            clockFormat = new SimpleDateFormat("hh:mm:ss a");
-            clock = clockFormat.format(Calendar.getInstance().getTime());
+            formatTime = new SimpleDateFormat("kk:mm:ss");
+            clock = formatTime.format(Calendar.getInstance().getTime());
+            formatDate = new SimpleDateFormat("dd MMMM yyyy");
+            date = formatDate.format(Calendar.getInstance().getTime());
+
         try {
             Thread.sleep(1000);
         }catch (InterruptedException e){
             e.printStackTrace();
         }
             GameRental.this.clockLabel.setText(clock);
+            GameRental.this.dateLabel.setText(date);
         }
 
     }
