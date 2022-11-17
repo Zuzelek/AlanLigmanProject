@@ -21,6 +21,8 @@ public class GameRental extends JFrame implements ActionListener {
     private JMenu mainMenuJMenuMembers, mainMenuJMenuGames;
     private JMenuItem mainMenuJMenuAddMembers, mainMenuJMenuViewMembers, mainMenuJMenuRemoveMembers,
                       mainMenuJMenuAddGame, mainMenuJMenuViewGames, mainMenuJMenuRemoveGame;
+    Calendar calendar;
+    SimpleDateFormat formatTime;
 
     private Game game;
     private Employee employee;
@@ -41,19 +43,36 @@ public class GameRental extends JFrame implements ActionListener {
         systemFrame.setJMenuBar(mainMenuJMenuBar);
 
         //MEMBERS JMENU
-        createMenuMembers();
+        mainMenuJMenuMembers = new JMenu("Members");
+        mainMenuJMenuBar.add(mainMenuJMenuMembers);
+
+
+        mainMenuJMenuAddMembers = new JMenuItem("Add Member");
+        mainMenuJMenuMembers.add(mainMenuJMenuAddMembers);
+
+        mainMenuJMenuViewMembers = new JMenuItem("View Members");
+        mainMenuJMenuMembers.add(mainMenuJMenuViewMembers);
+        mainMenuJMenuMembers.addSeparator();
+        mainMenuJMenuViewMembers.addActionListener(this);
+
+        mainMenuJMenuRemoveMembers = new JMenuItem("Remove Member");
+        mainMenuJMenuMembers.add(mainMenuJMenuRemoveMembers);
+        mainMenuJMenuMembers.addActionListener(this);
         //GAMES JMENU
         mainMenuJMenuGames = new JMenu("Games");
         mainMenuJMenuBar.add(mainMenuJMenuGames);
 
         mainMenuJMenuAddGame = new JMenuItem("Add Game");
         mainMenuJMenuGames.add(mainMenuJMenuAddGame);
+        mainMenuJMenuAddGame.addActionListener(this);
 
         mainMenuJMenuViewGames = new JMenuItem("View Games");
         mainMenuJMenuGames.add(mainMenuJMenuViewGames);
+        mainMenuJMenuViewGames.addActionListener(this);
 
         mainMenuJMenuRemoveGame = new JMenuItem("Remove Game");
         mainMenuJMenuGames.add(mainMenuJMenuRemoveGame);
+        mainMenuJMenuRemoveGame.addActionListener(this);
 
 
         gamePanel = new JPanel();
@@ -103,13 +122,12 @@ public class GameRental extends JFrame implements ActionListener {
         logoImage.setBounds(60,100,350,450);
         gamePanel.add(logoImage);
 
-        //LAST JLABEL
-
-        test = new JLabel("Hello");
-        test.setBounds(30,50,250,200);
-        test.setForeground(new Color(51,153,255));
-        gamePanel.add(test);
-
+        //CLOCK LABEL
+        clockLabel = new JLabel();
+        clockLabel.setBounds(200,25,120,40);
+        clockLabel.setFont(new Font("Arial",Font.BOLD,17));
+        clockLabel.setForeground(new Color(51,153,255));
+        gamePanel.add(clockLabel);
 
         systemFrame.setSize(500, 700);
         systemFrame.setLocationRelativeTo(null);
@@ -119,26 +137,13 @@ public class GameRental extends JFrame implements ActionListener {
 
         systemFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         systemFrame.setVisible(true);
+        rentalClock();
     }
     public static void main(String[] args) {
 
         new GameRental();
     }
-    public void createMenuMembers(){
-        mainMenuJMenuMembers = new JMenu("Members");
-        mainMenuJMenuBar.add(mainMenuJMenuMembers);
 
-        mainMenuJMenuAddMembers = new JMenuItem("Add Member");
-        mainMenuJMenuMembers.add(mainMenuJMenuAddMembers);
-
-        mainMenuJMenuViewMembers = new JMenuItem("View Members");
-        mainMenuJMenuMembers.add(mainMenuJMenuViewMembers);
-        mainMenuJMenuMembers.addSeparator();
-
-        mainMenuJMenuRemoveMembers = new JMenuItem("Remove Member");
-        mainMenuJMenuMembers.add(mainMenuJMenuRemoveMembers);
-        mainMenuJMenuMembers.addActionListener(this);
-    }
     public void addGame(){
         String gameTitle = JOptionPane.showInputDialog("Please enter the game title: ");
         String gameReleaseYear = JOptionPane.showInputDialog("Please enter the release year: ");
@@ -197,7 +202,6 @@ public class GameRental extends JFrame implements ActionListener {
             } else {
                 Iterator<Game> iterator = this.games.iterator();
                 while (iterator.hasNext())
-                    //System.out.println(iterator.next()+ " ");
                     gamesComboBox.addItem(((Game) iterator.next()).getTitle() + "\n");
                     JOptionPane.showMessageDialog(null, gamesComboBox, "Select a game to view it's details", JOptionPane.NO_OPTION);
                     
@@ -215,31 +219,48 @@ public class GameRental extends JFrame implements ActionListener {
         }
 
     public void removeGame(){
-
-    }
+        JComboBox gamesList = new JComboBox();
+        for(Game g : this.games)
+            gamesList.addItem(g.getTitle());
+        if(this.games.size() < 1)
+        {
+            JOptionPane.showMessageDialog(null,"No games have been found in the system","Games not found",JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Please select a game you wish to remove\n\n", "Remove Game", JOptionPane.QUESTION_MESSAGE);
+            JOptionPane.showMessageDialog(null, gamesList, "Remove Game", JOptionPane.INFORMATION_MESSAGE);
+            int gameSelect = gamesList.getSelectedIndex();
+            this.games.remove(gameSelect);
+            JOptionPane.showMessageDialog(null, "Selected game has been removed", "Game Removed", JOptionPane.INFORMATION_MESSAGE);
+        }
+        }
     public void rentalClock(){
 
-
         while(true) {
-            clockFormat = new SimpleDateFormat("hh:mm:ss");
+            clockFormat = new SimpleDateFormat("hh:mm:ss a");
             clock = clockFormat.format(Calendar.getInstance().getTime());
         try {
             Thread.sleep(1000);
         }catch (InterruptedException e){
             e.printStackTrace();
         }
-        GameRental.this.clockLabel.setText(clock);
+            GameRental.this.clockLabel.setText(clock);
         }
+
     }
 
     public void actionPerformed(ActionEvent e){
         String menuOption = e.getActionCommand();
 
-        if(menuOption == "Add Game" || e.getSource() == this.addGameButton)
+        if(e.getSource() == this.mainMenuJMenuAddGame || e.getSource() == this.addGameButton)
         {
             addGame();
         }
-        else if(e.getSource() == this.mainMenuJMenuMembers || e.getSource() == this.viewGameButton)
+        else if (e.getSource() == this.mainMenuJMenuRemoveGame || e.getSource() == this.removeGameButton)
+        {
+            removeGame();
+        }
+        else if(e.getSource() == this.mainMenuJMenuViewGames|| e.getSource() == this.viewGameButton)
         {
             displayGames();
         }
