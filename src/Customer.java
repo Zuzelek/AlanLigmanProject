@@ -6,14 +6,14 @@ public class Customer {
     private String emailAddress;
     private String address;
     private String phoneNumber;
-    private GregorianCalendar dateOfBirth;
+    private String dateOfBirth;
     private String password;
 
     public Customer(){
         this("Not Specified", "Not Specified","Not Specified","Not Specified","Not Specified",null,"Not specified");
     }
 
-    public Customer(String firstName, String surname, String emailAddress, String address,String phoneNumber, GregorianCalendar dateOfBirth, String password) {
+    public Customer(String firstName, String surname, String emailAddress, String address,String phoneNumber, String dateOfBirth, String password) {
         setFirstName(firstName);
         setSurname(surname);
         setEmailAddress(emailAddress);
@@ -62,11 +62,11 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
-    public GregorianCalendar getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(GregorianCalendar dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

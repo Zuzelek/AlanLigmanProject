@@ -110,10 +110,51 @@ public class GameRental extends JFrame implements ActionListener {
         new GameRental();
     }
 
+
+    public void addCustomer()
+    {
+        String firstName = JOptionPane.showInputDialog("Please enter your first name");
+        String lastName = JOptionPane.showInputDialog("Please enter your last name");
+        String emailAddress = JOptionPane.showInputDialog("Please enter your Email Address");
+        String address = JOptionPane.showInputDialog("Please enter your address");
+        String phoneNumber = JOptionPane.showInputDialog("Please enter your phone number");
+        String dateOfBirth = JOptionPane.showInputDialog("Please enter your date of Birth");
+        String password = JOptionPane.showInputDialog("Please enter a password");
+
+        this.customer = new Customer(firstName,lastName,emailAddress,address,phoneNumber,dateOfBirth,password);
+
+       //DO VALIDATION FOR ADD CUSTOMER
+
+        //ADD TO ARRAY LIST
+        this.customers.add(this.customer);
+    }
+    public void displayCustomers(){
+        JComboBox<String> customersComboBox = new JComboBox<>();
+        JTextArea customerResults = new JTextArea();
+        customerResults.setText("Customers found in the system\n\n");
+        try{
+            if(this.customers.size() == 0){
+                JOptionPane.showMessageDialog(null,"No customers have been found in the system. Please 'Open' the file.","Error, no customers found",JOptionPane.ERROR_MESSAGE);
+            }else {
+                Iterator<Customer> customerIterator = this.customers.iterator();
+                while(customerIterator.hasNext())
+                    customersComboBox.addItem(((Customer) customerIterator.next()).getFirstName() + "\n");
+                    JOptionPane.showMessageDialog(null, customersComboBox, "Select a customer to view details",JOptionPane.INFORMATION_MESSAGE);
+
+                    int comboBoxSelection = customersComboBox.getSelectedIndex();
+                    customerResults.append(((Customer) this.customers.get(comboBoxSelection)).toString());
+                    JOptionPane.showMessageDialog(null, customerResults,"Customer Details",JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        }catch (NullPointerException e){
+            JOptionPane.showMessageDialog(null,"Customer details could not be loaded","Error",JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
     public void addGame(){
         String gameTitle = JOptionPane.showInputDialog("Please enter the game title: ");
-        String gameReleaseYear = JOptionPane.showInputDialog("Please enter the release year: ");
-        String gamePrice = JOptionPane.showInputDialog("Please enter the price of the game");
+        String gameReleaseYear = JOptionPane.showInputDialog("Please enter the release year (YYYY) ");
+        String gamePrice = JOptionPane.showInputDialog("Please enter the price of the game (€EE.CC)");
         String gameCategories[] = {"Sandbox", "Shooters", "Role-playing","Simulation and sports","Puzzlers and party games","Action-adventure","Survival and Horror","Platformer"};
         String category = (String)JOptionPane.showInputDialog(null, "Choose", "Game Category", JOptionPane.PLAIN_MESSAGE, null, gameCategories, gameCategories[0]);
 
@@ -133,56 +174,42 @@ public class GameRental extends JFrame implements ActionListener {
                             if (gamePrice.length() == 2 || gamePrice.length() == 5 && gamePrice.charAt(2) == '.') {
                                 for (i = 0; i < gamePrice.length(); i++)
                                     break;
-                                    if (Character.isDigit(gamePrice.charAt(i)))
-                                    {
-                                        this.game = new Game(gameTitle,gameReleaseYear,category,gamePrice);
-                                        JOptionPane.showMessageDialog(null,"Game: "+gameTitle+" has been added to the system","Game Added",JOptionPane.INFORMATION_MESSAGE);
-                                        valid = true;
-                                        continue;
-                                    } else
-                                        gamePrice = JOptionPane.showInputDialog("Game price must be numeric, please re-enter");
-                                            continue;
-                            } else
-                                gamePrice = JOptionPane.showInputDialog("Game price must be 2 digits, please re-enter");
+                                if (Character.isDigit(gamePrice.charAt(i)))
+                                {
+                                    this.game = new Game(gameTitle,gameReleaseYear,category,gamePrice);
+                                    JOptionPane.showMessageDialog(null,"Game: "+gameTitle+" has been added to the system","Game Added",JOptionPane.INFORMATION_MESSAGE);
+                                    valid = true;
                                     continue;
-                        } else
-                            gameReleaseYear = JOptionPane.showInputDialog("Release year must be numeric, please re-enter");
+                                } else
+                                    gamePrice = JOptionPane.showInputDialog("Game price must be numeric, please re-enter");
                                 continue;
-                    } else
-                        gameReleaseYear = JOptionPane.showInputDialog("Release year must be 4 digits long, please re-enter");
+                            } else
+                                gamePrice = JOptionPane.showInputDialog("Game price must be in the form of (€EE.CC), please re-enter");
                             continue;
+                        } else
+                            gameReleaseYear = JOptionPane.showInputDialog("Release year must be numeric (YYYY), please re-enter");
+                        continue;
+                    } else
+                        gameReleaseYear = JOptionPane.showInputDialog("Release year must be 4 digits long (YYYY), please re-enter");
+                    continue;
                 }
             }
             break;
-            }
+        }
         this.games.add(this.game);
 
-    }
-    public void addCustomer()
-    {
-        String firstName = JOptionPane.showInputDialog("Please enter your first name");
-        String lastName = JOptionPane.showInputDialog("Please enter your last name");
-        String emailAddress = JOptionPane.showInputDialog("Please enter your Email Address");
-        String address = JOptionPane.showInputDialog("Please enter your address");
-        String phoneNumber = JOptionPane.showInputDialog("Please enter your phone number");
-        String dateOfBirth = JOptionPane.showInputDialog("Please enter your date of Birth");
-        String password = JOptionPane.showInputDialog("Please enter a password");
-
-       //DO VALIDATION FOR ADD CUSTOMER
-
-        //ADD TO ARRAY LIST
     }
     public void displayGames() {
         JComboBox<String> gamesComboBox = new JComboBox();
         JTextArea gameResults = new JTextArea();
         gameResults.setText("Game Details Found in the system:\n\n");
         try {
-            if (this.games.size() < 1) {
+            if (this.games.size() == 0) {
                 JOptionPane.showMessageDialog(null, "No games have been found in the system. Please 'Open' the file.", "Error, no games found", JOptionPane.ERROR_MESSAGE);
             } else {
-                Iterator<Game> iterator = this.games.iterator();
-                while (iterator.hasNext())
-                    gamesComboBox.addItem(((Game) iterator.next()).getTitle() + "\n");
+                Iterator<Game> gameIterator = this.games.iterator();
+                while (gameIterator.hasNext())
+                    gamesComboBox.addItem(((Game) gameIterator.next()).getTitle() + "\n");
                     JOptionPane.showMessageDialog(null, gamesComboBox, "Select a game to view it's details", JOptionPane.NO_OPTION);
                     
                     int comboBoxSelection = gamesComboBox.getSelectedIndex();
@@ -193,10 +220,26 @@ public class GameRental extends JFrame implements ActionListener {
             }
         }catch(NullPointerException e)
         {
-            JOptionPane.showMessageDialog(null,"Game could not be loaded","Error",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Game details could not be loaded","Error",JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
         }
+    public void removeGame(){
+        JComboBox gamesList = new JComboBox();
+        for(Game g : this.games)
+            gamesList.addItem(g.getTitle());
+        if(this.games.size() == 0)
+        {
+            JOptionPane.showMessageDialog(null,"No games have been found in the system","Games not found",JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Please select a game you wish to remove\n\n", "Remove Game", JOptionPane.QUESTION_MESSAGE);
+            JOptionPane.showMessageDialog(null, gamesList, "Remove Game", JOptionPane.INFORMATION_MESSAGE);
+            int gameSelect = gamesList.getSelectedIndex();
+            this.games.remove(gameSelect);
+            JOptionPane.showMessageDialog(null, "Selected game has been removed", "Game Removed", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
     public void displayClock(){
         clockLabel = new JLabel();
         clockLabel.setBounds(205,25,120,40);
@@ -268,23 +311,6 @@ public class GameRental extends JFrame implements ActionListener {
 
     }
 
-    public void removeGame(){
-        JComboBox gamesList = new JComboBox();
-        for(Game g : this.games)
-            gamesList.addItem(g.getTitle());
-        if(this.games.size() < 1)
-        {
-            JOptionPane.showMessageDialog(null,"No games have been found in the system","Games not found",JOptionPane.ERROR_MESSAGE);
-        }
-        else {
-            JOptionPane.showMessageDialog(null, "Please select a game you wish to remove\n\n", "Remove Game", JOptionPane.QUESTION_MESSAGE);
-            JOptionPane.showMessageDialog(null, gamesList, "Remove Game", JOptionPane.INFORMATION_MESSAGE);
-            int gameSelect = gamesList.getSelectedIndex();
-            this.games.remove(gameSelect);
-            JOptionPane.showMessageDialog(null, "Selected game has been removed", "Game Removed", JOptionPane.INFORMATION_MESSAGE);
-        }
-        }
-
 
     public void rentalClock(){
 
@@ -320,6 +346,15 @@ public class GameRental extends JFrame implements ActionListener {
         {
             displayGames();
         }
+        else if(e.getSource() == this.mainMenuJMenuAddCustomer)
+        {
+            addCustomer();
+        }
+        else if(e.getSource() == this.mainMenuJMenuViewCustomers)
+        {
+            displayCustomers();
+        }
+
 
     }
 }
