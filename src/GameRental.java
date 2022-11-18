@@ -158,6 +158,20 @@ public class GameRental extends JFrame implements ActionListener {
         this.games.add(this.game);
 
     }
+    public void addCustomer()
+    {
+        String firstName = JOptionPane.showInputDialog("Please enter your first name");
+        String lastName = JOptionPane.showInputDialog("Please enter your last name");
+        String emailAddress = JOptionPane.showInputDialog("Please enter your Email Address");
+        String address = JOptionPane.showInputDialog("Please enter your address");
+        String phoneNumber = JOptionPane.showInputDialog("Please enter your phone number");
+        String dateOfBirth = JOptionPane.showInputDialog("Please enter your date of Birth");
+        String password = JOptionPane.showInputDialog("Please enter a password");
+
+       //DO VALIDATION FOR ADD CUSTOMER
+
+        //ADD TO ARRAY LIST
+    }
     public void displayGames() {
         JComboBox<String> gamesComboBox = new JComboBox();
         JTextArea gameResults = new JTextArea();
