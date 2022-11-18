@@ -18,10 +18,10 @@ public class GameRental extends JFrame implements ActionListener {
     private JPanel gamePanel;
     private JLabel logoImage, clockLabel, dateLabel;
     private JMenuBar mainMenuJMenuBar;
-    private JMenu mainMenuJMenuMembers, mainMenuJMenuGames, mainMenuJMenuCustomers;
-    private JMenuItem mainMenuJMenuAddMembers, mainMenuJMenuViewMembers, mainMenuJMenuRemoveMembers;
+    private JMenu mainMenuJMenuCustomer, mainMenuJMenuGames, mainMenuJMenuEmployee;
+    private JMenuItem mainMenuJMenuAddCustomer, mainMenuJMenuViewCustomer, mainMenuJMenuRemoveCustomer;
     private JMenuItem mainMenuJMenuAddGame, mainMenuJMenuViewGames, mainMenuJMenuRemoveGame;
-    private JMenuItem mainMenuJMenuAddCustomer, mainMenuJMenuRemoveCustomer, mainMenuJMenuViewCustomers;
+    private JMenuItem mainMenuJMenuAddEmployee, mainMenuJMenuRemoveEmployee, mainMenuJMenuViewEmployee;
 
     Calendar calendar;
     SimpleDateFormat formatTime;
@@ -128,29 +128,57 @@ public class GameRental extends JFrame implements ActionListener {
         //ADD TO ARRAY LIST
         this.customers.add(this.customer);
     }
-    public void displayCustomers(){
-        JComboBox<String> customersComboBox = new JComboBox<>();
-        JTextArea customerResults = new JTextArea();
-        customerResults.setText("Customers found in the system\n\n");
-        try{
-            if(this.customers.size() == 0){
-                JOptionPane.showMessageDialog(null,"No customers have been found in the system. Please 'Open' the file.","Error, no customers found",JOptionPane.ERROR_MESSAGE);
-            }else {
-                Iterator<Customer> customerIterator = this.customers.iterator();
-                while(customerIterator.hasNext())
-                    customersComboBox.addItem(((Customer) customerIterator.next()).getFirstName() + "\n");
-                    JOptionPane.showMessageDialog(null, customersComboBox, "Select a customer to view details",JOptionPane.INFORMATION_MESSAGE);
+    public void addEmployee()
+    {
+        String firstName = JOptionPane.showInputDialog("Please enter your first name");
+        String lastName = JOptionPane.showInputDialog("Please enter your last name");
 
-                    int comboBoxSelection = customersComboBox.getSelectedIndex();
-                    customerResults.append(((Customer) this.customers.get(comboBoxSelection)).toString());
-                    JOptionPane.showMessageDialog(null, customerResults,"Customer Details",JOptionPane.INFORMATION_MESSAGE);
+        this.employee = new Employee(firstName,lastName);
+
+        //DO VALIDATION FOR ADD CUSTOMER
+
+        //ADD TO ARRAY LIST
+        this.employees.add(this.employee);
+        JOptionPane.showMessageDialog(null,"Employee has been added to the system","Employee Added",JOptionPane.INFORMATION_MESSAGE);
+    }
+    public void displayEmployees(){
+        JComboBox<String> employeeComboBox = new JComboBox<>();
+        JTextArea employeeResults = new JTextArea();
+        employeeResults.setText("Employees found in the system\n\n");
+        try{
+            if(this.employees.size() < 1){
+                JOptionPane.showMessageDialog(null,"No customers have been found in the system. Please 'Open' the file.","Error, no employees found",JOptionPane.ERROR_MESSAGE);
+            }else {
+                Iterator<Employee> employeeIterator = this.employees.iterator();
+                while(employeeIterator.hasNext())
+                    employeeComboBox.addItem(((Employee) employeeIterator.next()).getFirstName() + "\n");
+                    JOptionPane.showMessageDialog(null, employeeComboBox, "Select an employee to view details",JOptionPane.INFORMATION_MESSAGE);
+
+                    int comboBoxSelection = employeeComboBox.getSelectedIndex();
+                    employeeResults.append(((Employee) this.employees.get(comboBoxSelection)).toString());
+                    JOptionPane.showMessageDialog(null, employeeResults,"Employee Details",JOptionPane.INFORMATION_MESSAGE);
             }
 
         }catch (NullPointerException e){
-            JOptionPane.showMessageDialog(null,"Customer details could not be loaded","Error",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Employee details could not be loaded","Error",JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
     }
+    public void removeEmployee(){
+        JComboBox employeeList = new JComboBox();
+        for(Employee e : this.employees)
+            employeeList.addItem(e.getFirstName());
+        if(this.employees.size() < 1){
+            JOptionPane.showMessageDialog(null,"No employees have been found in the system","Employees not found",JOptionPane.ERROR_MESSAGE);
+        }else{
+            JOptionPane.showMessageDialog(null,"Please select an employee you wish to remove\n\n","Remove Employee",JOptionPane.QUESTION_MESSAGE);
+            JOptionPane.showMessageDialog(null,employeeList,"Remove Customer",JOptionPane.INFORMATION_MESSAGE);
+            int employeeSelect = employeeList.getSelectedIndex();
+            this.employees.remove(employeeSelect);
+            JOptionPane.showMessageDialog(null,"Selected employee has been removed","Remove Employee",JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
     public void addGame(){
         String gameTitle = JOptionPane.showInputDialog("Please enter the game title: ");
         String gameReleaseYear = JOptionPane.showInputDialog("Please enter the release year (YYYY) ");
@@ -158,9 +186,8 @@ public class GameRental extends JFrame implements ActionListener {
         String gameCategories[] = {"Sandbox", "Shooters", "Role-playing","Simulation and sports","Puzzlers and party games","Action-adventure","Survival and Horror","Platformer"};
         String category = (String)JOptionPane.showInputDialog(null, "Choose", "Game Category", JOptionPane.PLAIN_MESSAGE, null, gameCategories, gameCategories[0]);
 
-
         int i;
-        boolean valid = false;
+        boolean valid;
         while(!gameTitle.equals(""))
         {
             valid = false;
@@ -228,7 +255,7 @@ public class GameRental extends JFrame implements ActionListener {
         JComboBox gamesList = new JComboBox();
         for(Game g : this.games)
             gamesList.addItem(g.getTitle());
-        if(this.games.size() == 0)
+        if(this.games.size() < 1)
         {
             JOptionPane.showMessageDialog(null,"No games have been found in the system","Games not found",JOptionPane.ERROR_MESSAGE);
         }
@@ -240,39 +267,27 @@ public class GameRental extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null, "Selected game has been removed", "Game Removed", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    public void displayClock(){
-        clockLabel = new JLabel();
-        clockLabel.setBounds(205,25,120,40);
-        clockLabel.setFont(new Font("Arial",Font.BOLD,22));
-        clockLabel.setForeground(new Color(51,153,255));
-        gamePanel.add(clockLabel);
 
-        dateLabel = new JLabel();
-        dateLabel.setBounds(190,50,120,40);
-        dateLabel.setFont(new Font("Arial",Font.BOLD,13));
-        dateLabel.setForeground(new Color(51,153,255));
-        gamePanel.add(dateLabel);
-    }
     public void displayJMenu(){
         mainMenuJMenuBar = new JMenuBar();
         systemFrame.setJMenuBar(mainMenuJMenuBar);
 
-        //MEMBERS JMENU
-        mainMenuJMenuMembers = new JMenu("Members");
-        mainMenuJMenuBar.add(mainMenuJMenuMembers);
+        //CUSTOMERS JMENU
+        mainMenuJMenuCustomer = new JMenu("Customers");
+        mainMenuJMenuBar.add(mainMenuJMenuCustomer);
 
-        mainMenuJMenuAddMembers = new JMenuItem("Add Member");
-        mainMenuJMenuMembers.add(mainMenuJMenuAddMembers);
-        mainMenuJMenuMembers.addSeparator();
+        mainMenuJMenuAddCustomer = new JMenuItem("Add Customer");
+        mainMenuJMenuCustomer.add(mainMenuJMenuAddCustomer);
+        mainMenuJMenuCustomer.addSeparator();
 
-        mainMenuJMenuViewMembers = new JMenuItem("View Members");
-        mainMenuJMenuMembers.add(mainMenuJMenuViewMembers);
-        mainMenuJMenuMembers.addSeparator();
-        mainMenuJMenuViewMembers.addActionListener(this);
+        mainMenuJMenuViewCustomer = new JMenuItem("View Customers");
+        mainMenuJMenuCustomer.add(mainMenuJMenuViewCustomer);
+        mainMenuJMenuCustomer.addSeparator();
+        mainMenuJMenuViewCustomer.addActionListener(this);
 
-        mainMenuJMenuRemoveMembers = new JMenuItem("Remove Member");
-        mainMenuJMenuMembers.add(mainMenuJMenuRemoveMembers);
-        mainMenuJMenuMembers.addActionListener(this);
+        mainMenuJMenuRemoveCustomer = new JMenuItem("Remove Customer");
+        mainMenuJMenuCustomer.add(mainMenuJMenuRemoveCustomer);
+        mainMenuJMenuCustomer.addActionListener(this);
         //GAMES JMENU
         mainMenuJMenuGames = new JMenu("Games");
         mainMenuJMenuBar.add(mainMenuJMenuGames);
@@ -291,27 +306,38 @@ public class GameRental extends JFrame implements ActionListener {
         mainMenuJMenuGames.add(mainMenuJMenuRemoveGame);
         mainMenuJMenuRemoveGame.addActionListener(this);
         //CUSTOMERS JMENU
-        mainMenuJMenuCustomers = new JMenu("Customer");
+        mainMenuJMenuEmployee = new JMenu("Employees");
 
-        mainMenuJMenuAddCustomer = new JMenuItem("Add Customer");
-        mainMenuJMenuCustomers.add(mainMenuJMenuAddCustomer);
-        mainMenuJMenuCustomers.addSeparator();
-        mainMenuJMenuAddCustomer.addActionListener(this);
+        mainMenuJMenuAddEmployee = new JMenuItem("Add Employee");
+        mainMenuJMenuEmployee.add(mainMenuJMenuAddEmployee);
+        mainMenuJMenuEmployee.addSeparator();
+        mainMenuJMenuAddEmployee.addActionListener(this);
 
-        mainMenuJMenuViewCustomers = new JMenuItem("View Customers");
-        mainMenuJMenuCustomers.add(mainMenuJMenuViewCustomers);
-        mainMenuJMenuCustomers.addSeparator();
-        mainMenuJMenuViewCustomers.addActionListener(this);
+        mainMenuJMenuViewEmployee = new JMenuItem("View Employees");
+        mainMenuJMenuEmployee.add(mainMenuJMenuViewEmployee);
+        mainMenuJMenuEmployee.addSeparator();
+        mainMenuJMenuViewEmployee.addActionListener(this);
 
-        mainMenuJMenuRemoveCustomer = new JMenuItem("Remove Customer");
-        mainMenuJMenuCustomers.add(mainMenuJMenuRemoveCustomer);
-        mainMenuJMenuRemoveMembers.addActionListener(this);
+        mainMenuJMenuRemoveEmployee = new JMenuItem("Remove Employee");
+        mainMenuJMenuEmployee.add(mainMenuJMenuRemoveEmployee);
+        mainMenuJMenuRemoveEmployee.addActionListener(this);
 
-        mainMenuJMenuBar.add(mainMenuJMenuCustomers);
+        mainMenuJMenuBar.add(mainMenuJMenuEmployee);
 
     }
+    public void displayClock(){
+        clockLabel = new JLabel();
+        clockLabel.setBounds(205,25,120,40);
+        clockLabel.setFont(new Font("Arial",Font.BOLD,22));
+        clockLabel.setForeground(new Color(51,153,255));
+        gamePanel.add(clockLabel);
 
-
+        dateLabel = new JLabel();
+        dateLabel.setBounds(190,50,120,40);
+        dateLabel.setFont(new Font("Arial",Font.BOLD,13));
+        dateLabel.setForeground(new Color(51,153,255));
+        gamePanel.add(dateLabel);
+    }
     public void rentalClock(){
 
         while(true) {
@@ -330,8 +356,9 @@ public class GameRental extends JFrame implements ActionListener {
         }
 
     }
-
     public void actionPerformed(ActionEvent e){
+
+
         String menuOption = e.getActionCommand();
 
         if(e.getSource() == this.mainMenuJMenuAddGame || e.getSource() == this.addGameButton)
@@ -346,15 +373,18 @@ public class GameRental extends JFrame implements ActionListener {
         {
             displayGames();
         }
-        else if(e.getSource() == this.mainMenuJMenuAddCustomer)
+        else if(e.getSource() == this.mainMenuJMenuAddEmployee)
         {
-            addCustomer();
+            addEmployee();
         }
-        else if(e.getSource() == this.mainMenuJMenuViewCustomers)
+        else if(e.getSource() == this.mainMenuJMenuViewEmployee)
         {
-            displayCustomers();
+            displayEmployees();
         }
-
+        else if(e.getSource() == this.mainMenuJMenuRemoveEmployee)
+        {
+            removeEmployee();
+        }
 
     }
 }
