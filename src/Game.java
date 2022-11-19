@@ -5,7 +5,7 @@ public class Game implements Serializable {
     private String releaseYear;
     private String gameCategory;
     private String price;
-    public Game() {
+    public Game(String firstName, String lastName) {
     this("Unknown","Not given","Unknown","Unknown");
     }
 

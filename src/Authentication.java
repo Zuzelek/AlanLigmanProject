@@ -8,8 +8,7 @@ public class Authentication extends JFrame implements ActionListener {
     private JLabel username, password, welcome;
     private JTextField userText;
     private JPasswordField passwordText;
-    private JButton login, close;
-
+    private JButton login,close;
     public Authentication(){
         this.setTitle("Authentication");
         this.setSize(400,250);

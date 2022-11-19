@@ -16,10 +16,13 @@ public class GameRental extends JFrame implements ActionListener {
     private JFrame systemFrame;
     private JButton addGameButton, removeGameButton,viewGameButton ;
     private JPanel gamePanel;
-    private JLabel logoImage, clockLabel, dateLabel;
+    private JLabel logoImage;
+    private JLabel clockLabel;
+    private JLabel dateLabel;
+    public JLabel nicknameLabel;
     private JMenuBar mainMenuJMenuBar;
-    private JMenu mainMenuJMenuCustomer, mainMenuJMenuGames, mainMenuJMenuEmployee;
-    private JMenuItem mainMenuJMenuAddCustomer, mainMenuJMenuViewCustomer, mainMenuJMenuRemoveCustomer;
+    private JMenu mainMenuJMenuCustomer, mainMenuJMenuGames, mainMenuJMenuEmployee, mainMenuJMenuFiles;
+    private JMenuItem mainMenuJMenuAddCustomer, mainMenuJMenuViewCustomer, mainMenuJMenuRemoveCustomer, mainMenuJMenuOpenFile, mainMenuJMenuSaveFile, mainMenuJMenuExit;
     private JMenuItem mainMenuJMenuAddGame, mainMenuJMenuViewGames, mainMenuJMenuRemoveGame;
     private JMenuItem mainMenuJMenuAddEmployee, mainMenuJMenuRemoveEmployee, mainMenuJMenuViewEmployee;
 
@@ -55,6 +58,13 @@ public class GameRental extends JFrame implements ActionListener {
         clockLabel.setBackground(Color.BLACK);
         gamePanel.add(clockLabel);
 
+        //NICKNAME LABEL
+        nicknameLabel = new JLabel("Welcome Back!");
+        nicknameLabel.setSize(120,20);
+        nicknameLabel.setFont(new Font("Arial",Font.BOLD,16));
+        nicknameLabel.setForeground(new Color(255,51,51));
+        nicknameLabel.setLocation(180,150);
+        gamePanel.add(nicknameLabel);
 
         //ADD GAME BUTTON
         addGameButton = new JButton("Add Game");
@@ -128,12 +138,50 @@ public class GameRental extends JFrame implements ActionListener {
         //ADD TO ARRAY LIST
         this.customers.add(this.customer);
     }
+    public void removeCustomer(){
+        JComboBox customerList = new JComboBox();
+        for(Customer c : this.customers)
+            customerList.addItem(c.getFirstName());
+        if(this.customers.size() < 1){
+            JOptionPane.showMessageDialog(null,"No customers have been found in the system","Customers not found",JOptionPane.ERROR_MESSAGE);
+        }else{
+            JOptionPane.showMessageDialog(null,"Please select a customer you wish to remove\n\n","Remove Customer",JOptionPane.QUESTION_MESSAGE);
+            JOptionPane.showMessageDialog(null,customerList,"Remove Customer",JOptionPane.INFORMATION_MESSAGE);
+            int customerSelect = customerList.getSelectedIndex();
+            this.customers.remove(customerSelect);
+            JOptionPane.showMessageDialog(null,"Selected customer has been removed","Remove Customer",JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
     public void addEmployee()
     {
-        String firstName = JOptionPane.showInputDialog("Please enter your first name");
-        String lastName = JOptionPane.showInputDialog("Please enter your last name");
-
-        this.employee = new Employee(firstName,lastName);
+        String firstName = JOptionPane.showInputDialog("Please enter employees first name");
+        String lastName = JOptionPane.showInputDialog("Please enter employees last name");
+        int i;
+        boolean valid;
+        while(!firstName.equals(""))
+        {
+            valid = false;
+            while(!valid)
+            {
+                for (i = 0; i < firstName.length(); i++)
+                    break;
+                        if (!Character.isDigit(firstName.charAt(i)))
+                        {
+                                for (i = 0; i < lastName.length(); i++)
+                                    break;
+                                if (!Character.isDigit(lastName.charAt(i)))
+                                {
+                                    this.employee = new Employee(firstName,lastName);
+                                    JOptionPane.showMessageDialog(null,"Employee: "+firstName+" has been added to the system","Employee Added",JOptionPane.INFORMATION_MESSAGE);
+                                    valid = true;
+                                    continue;
+                                } else
+                                    firstName = JOptionPane.showInputDialog("First name must be numeric, please re-enter");
+                        } else
+                            lastName = JOptionPane.showInputDialog("Last name must be numeric , please re-enter");
+            }
+            break;
+        }
 
         //DO VALIDATION FOR ADD CUSTOMER
 
@@ -279,6 +327,7 @@ public class GameRental extends JFrame implements ActionListener {
         mainMenuJMenuAddCustomer = new JMenuItem("Add Customer");
         mainMenuJMenuCustomer.add(mainMenuJMenuAddCustomer);
         mainMenuJMenuCustomer.addSeparator();
+        mainMenuJMenuAddCustomer.addActionListener(this);
 
         mainMenuJMenuViewCustomer = new JMenuItem("View Customers");
         mainMenuJMenuCustomer.add(mainMenuJMenuViewCustomer);
@@ -384,6 +433,14 @@ public class GameRental extends JFrame implements ActionListener {
         else if(e.getSource() == this.mainMenuJMenuRemoveEmployee)
         {
             removeEmployee();
+        }
+        else if(e.getSource() == this.mainMenuJMenuAddCustomer)
+        {
+            addCustomer();
+        }
+        else if(e.getSource() == this.mainMenuJMenuRemoveCustomer)
+        {
+            removeCustomer();
         }
 
     }
