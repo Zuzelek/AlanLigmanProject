@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.GregorianCalendar;
 
-public class Customer {
+public class Customer implements Serializable {
     private String firstName;
     private String surname;
     private String emailAddress;

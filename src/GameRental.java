@@ -3,10 +3,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.Objects;
 
 
 public class GameRental extends JFrame implements ActionListener {
@@ -182,12 +184,8 @@ public class GameRental extends JFrame implements ActionListener {
             }
             break;
         }
-
-        //DO VALIDATION FOR ADD CUSTOMER
-
         //ADD TO ARRAY LIST
         this.employees.add(this.employee);
-        JOptionPane.showMessageDialog(null,"Employee has been added to the system","Employee Added",JOptionPane.INFORMATION_MESSAGE);
     }
     public void displayEmployees(){
         JComboBox<String> employeeComboBox = new JComboBox<>();
@@ -195,7 +193,7 @@ public class GameRental extends JFrame implements ActionListener {
         employeeResults.setText("Employees found in the system\n\n");
         try{
             if(this.employees.size() < 1){
-                JOptionPane.showMessageDialog(null,"No customers have been found in the system. Please 'Open' the file.","Error, no employees found",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"No employees have been found in the system. Please 'Open' the file.","Error, no employees found",JOptionPane.ERROR_MESSAGE);
             }else {
                 Iterator<Employee> employeeIterator = this.employees.iterator();
                 while(employeeIterator.hasNext())
@@ -319,6 +317,24 @@ public class GameRental extends JFrame implements ActionListener {
     public void displayJMenu(){
         mainMenuJMenuBar = new JMenuBar();
         systemFrame.setJMenuBar(mainMenuJMenuBar);
+        //FILE JMENU
+        mainMenuJMenuFiles = new JMenu("File");
+        mainMenuJMenuBar.add(mainMenuJMenuFiles);
+
+        mainMenuJMenuSaveFile = new JMenuItem("Save File");
+        mainMenuJMenuFiles.addSeparator();
+        mainMenuJMenuFiles.add(mainMenuJMenuSaveFile);
+        mainMenuJMenuSaveFile.addActionListener(this);
+
+        mainMenuJMenuOpenFile = new JMenuItem("Open File");
+        mainMenuJMenuFiles.addSeparator();
+        mainMenuJMenuFiles.add(mainMenuJMenuOpenFile);
+        mainMenuJMenuOpenFile.addActionListener(this);
+
+        mainMenuJMenuExit = new JMenuItem("Exit");
+        mainMenuJMenuFiles.addSeparator();
+        mainMenuJMenuFiles.add(mainMenuJMenuExit);
+        mainMenuJMenuExit.addActionListener(this);
 
         //CUSTOMERS JMENU
         mainMenuJMenuCustomer = new JMenu("Customers");
@@ -405,6 +421,45 @@ public class GameRental extends JFrame implements ActionListener {
         }
 
     }
+    public void saveSystem() throws IOException {
+        FileOutputStream employeeOut = new FileOutputStream("EmployeeDetails.ser");
+        ObjectOutputStream employeeOutStream = new ObjectOutputStream(employeeOut);
+        employeeOutStream.writeObject(this.employees);
+        employeeOut.close();
+
+        FileOutputStream customerOut = new FileOutputStream("CustomerDetails.ser");
+        ObjectOutputStream customerOutStream = new ObjectOutputStream(customerOut);
+        customerOutStream.writeObject(this.customers);
+        customerOut.close();
+
+        FileOutputStream gameOut = new FileOutputStream("GameDetails.ser");
+        ObjectOutputStream gameOutStream = new ObjectOutputStream(gameOut);
+        gameOutStream.writeObject(this.games);
+        gameOut.close();
+
+        JOptionPane.showMessageDialog(null,"All Details have been saved!","Saved",JOptionPane.INFORMATION_MESSAGE);
+    }
+    public void openSystem() throws IOException, ClassNotFoundException {
+        FileInputStream employeeIn = new FileInputStream("EmployeeDetails.ser");
+        ObjectInputStream employeeInStream = new ObjectInputStream(employeeIn);
+        this.employees = (ArrayList<Employee>) employeeInStream.readObject();
+        employeeIn.close();
+        employeeInStream.close();
+
+        FileInputStream customerIn = new FileInputStream("CustomerDetails.ser");
+        ObjectInputStream customerInStream = new ObjectInputStream(customerIn);
+        this.customers = (ArrayList<Customer>) customerInStream.readObject();
+        customerIn.close();
+        customerInStream.close();
+
+        FileInputStream gameIn = new FileInputStream("GameDetails.ser");
+        ObjectInputStream gameInStream = new ObjectInputStream(gameIn);
+        this.games = (ArrayList<Game>) gameInStream.readObject();
+        gameIn.close();
+        gameInStream.close();
+
+        JOptionPane.showMessageDialog(null,"All Details have been loaded onto the system","Files Loaded",JOptionPane.INFORMATION_MESSAGE);
+    }
     public void actionPerformed(ActionEvent e){
 
 
@@ -441,6 +496,29 @@ public class GameRental extends JFrame implements ActionListener {
         else if(e.getSource() == this.mainMenuJMenuRemoveCustomer)
         {
             removeCustomer();
+        }
+        else if(e.getSource() == this.mainMenuJMenuSaveFile)
+        {
+            try {
+                saveSystem();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        else if(e.getSource() == this.mainMenuJMenuOpenFile)
+        {
+            try {
+                openSystem();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        else if(e.getSource() == this.mainMenuJMenuExit)
+        {
+            JOptionPane.showMessageDialog(null,"Goodbye!");
+            System.exit(0);
         }
 
     }
