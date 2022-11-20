@@ -1,12 +1,17 @@
 import java.io.Serializable;
+//Game.java
 
+/**
+ * An instantiable class which defines a Game.
+ * @author Alan Ligman
+ */
 public class Game implements Serializable {
     private String title;
     private String releaseYear;
     private String gameCategory;
     private String price;
     public Game(String firstName, String lastName) {
-    this("Unknown","Not given","Unknown","Unknown");
+        this("Unknown","Not given","Unknown","Unknown");
     }
 
     //4 Argument Constructor

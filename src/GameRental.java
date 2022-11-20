@@ -126,19 +126,86 @@ public class GameRental extends JFrame implements ActionListener {
     public void addCustomer()
     {
         String firstName = JOptionPane.showInputDialog("Please enter your first name");
-        String lastName = JOptionPane.showInputDialog("Please enter your last name");
-        String emailAddress = JOptionPane.showInputDialog("Please enter your Email Address");
-        String address = JOptionPane.showInputDialog("Please enter your address");
-        String phoneNumber = JOptionPane.showInputDialog("Please enter your phone number");
-        String dateOfBirth = JOptionPane.showInputDialog("Please enter your date of Birth");
-        String password = JOptionPane.showInputDialog("Please enter a password");
+        int i;
 
-        this.customer = new Customer(firstName,lastName,emailAddress,address,phoneNumber,dateOfBirth,password);
+        boolean valid;
+        while(!firstName.equals(""))
+        {
+            valid = false;
+            while(!valid)
+            {
+                String lastName = JOptionPane.showInputDialog("Please enter your last name");
+                String password = JOptionPane.showInputDialog("Please enter a password");
+                String emailAddress = JOptionPane.showInputDialog("Please enter your Email Address");
+                String address = JOptionPane.showInputDialog("Please enter your address");
+                String phoneNumber = JOptionPane.showInputDialog("Please enter your phone number EG. 1234567890");
+                String dateOfBirth = JOptionPane.showInputDialog("Please enter your date of Birth in the format of DD/MM/YYYY");
 
-       //DO VALIDATION FOR ADD CUSTOMER
-
-        //ADD TO ARRAY LIST
+                if(!lastName.equals(""))
+                {
+                    if(password.length() >= 8 && password.length() <= 15)
+                    {
+                        if(phoneNumber.length() == 10)
+                        {
+                            if(dateOfBirth.length() == 12)
+                            {
+                                if(Character.isDigit(dateOfBirth.charAt(0)) && (Character.isDigit(dateOfBirth.charAt(1))))
+                                int dobDay = Integer.parseInt(dateOfBirth.substring(0,2));
+                                int dobMonth = Integer.parseInt(dateOfBirth.substring(3,5));
+                                int dobYear = Integer.parseInt(dateOfBirth.substring(6,10));
+                                if()
+                                for (i = 0; i < address.length(); i++)
+                                    break;
+                                    if (Character.isDigit(phoneNumber.charAt(i)))
+                                    {
+                                        this.customer = new Customer(firstName, lastName, emailAddress, address, phoneNumber, dateOfBirth, password);
+                                        JOptionPane.showMessageDialog(null, "Customer: " + firstName + " has been added to the system", "Customer Added", JOptionPane.INFORMATION_MESSAGE);
+                                        valid = true;
+                                    } else
+                                        phoneNumber = JOptionPane.showInputDialog("Phone number must be numeric, please re-enter");
+                            }
+                            else
+                                dateOfBirth = JOptionPane.showInputDialog("Date of Birth must be 12 characters in length and in the format of DD/MM/YYYY, please re-enter");
+                                continue;
+                        }
+                        else
+                            phoneNumber = JOptionPane.showInputDialog("Phone number must be 10 in length, please re-enter");
+                    continue;
+                    }
+                    else
+                        password = JOptionPane.showInputDialog("Password must be between 8 and 15 characters, please re-enter");
+                    continue;
+                }
+                else
+                    lastName = JOptionPane.showInputDialog("Last name cannot be empty, please re-enter");
+                    continue;
+            }
+            break;
+        }
         this.customers.add(this.customer);
+    }
+    public void displayCustomer(){
+        JComboBox customersComboBox = new JComboBox();
+        JTextArea customerResults = new JTextArea();
+        customerResults.append("The following customers have been found in the system:\n\n");
+        try{
+            if(this.customers.size() < 1){
+                JOptionPane.showMessageDialog(null,"No customers have been found in the system, please load a file","Error, no customers found",JOptionPane.ERROR_MESSAGE);
+            }else{
+                Iterator<Customer> customerIterator = this.customers.iterator(); {
+                    while(customerIterator.hasNext())
+                        customersComboBox.addItem(((Customer) customerIterator.next()).getFirstName() + "\n");
+                    JOptionPane.showMessageDialog(null, customersComboBox,"Customer Details",JOptionPane.INFORMATION_MESSAGE);
+
+                    int comboBoxSelection = customersComboBox.getSelectedIndex();
+                    customerResults.append(((Customer) this.customers.get(comboBoxSelection)).toString());
+                    JOptionPane.showMessageDialog(null,customerResults,"Customer Details",JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        }catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "Customer details could not be loaded", "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }
     public void removeCustomer(){
         JComboBox customerList = new JComboBox();
@@ -154,6 +221,7 @@ public class GameRental extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null,"Selected customer has been removed","Remove Customer",JOptionPane.INFORMATION_MESSAGE);
         }
     }
+
     public void addEmployee()
     {
         String firstName = JOptionPane.showInputDialog("Please enter employees first name");
@@ -228,7 +296,7 @@ public class GameRental extends JFrame implements ActionListener {
     public void addGame(){
         String gameTitle = JOptionPane.showInputDialog("Please enter the game title: ");
         String gameReleaseYear = JOptionPane.showInputDialog("Please enter the release year (YYYY) ");
-        String gamePrice = JOptionPane.showInputDialog("Please enter the price of the game (€EE.CC)");
+        String gamePrice = JOptionPane.showInputDialog("Please enter the price of the game (€00.00 or €0.00)");
         String gameCategories[] = {"Sandbox", "Shooters", "Role-playing","Simulation and sports","Puzzlers and party games","Action-adventure","Survival and Horror","Platformer"};
         String category = (String)JOptionPane.showInputDialog(null, "Choose", "Game Category", JOptionPane.PLAIN_MESSAGE, null, gameCategories, gameCategories[0]);
 
@@ -244,7 +312,7 @@ public class GameRental extends JFrame implements ActionListener {
                 {
                     if (gameReleaseYear.length() == 4) {
                         if (Character.isDigit(gameReleaseYear.charAt(i))) {
-                            if (gamePrice.length() == 2 || gamePrice.length() == 5 && gamePrice.charAt(2) == '.') {
+                            if (gamePrice.length() == 2 || gamePrice.length() == 5 && gamePrice.charAt(2) == '.' || gamePrice.length() == 4 && gamePrice.charAt(1) == '.') {
                                 for (i = 0; i < gamePrice.length(); i++)
                                     break;
                                 if (Character.isDigit(gamePrice.charAt(i)))
@@ -257,7 +325,7 @@ public class GameRental extends JFrame implements ActionListener {
                                     gamePrice = JOptionPane.showInputDialog("Game price must be numeric, please re-enter");
                                 continue;
                             } else
-                                gamePrice = JOptionPane.showInputDialog("Game price must be in the form of (€EE.CC), please re-enter");
+                                gamePrice = JOptionPane.showInputDialog("Game price must be in the form of (€00.00 or €0.00), please re-enter");
                             continue;
                         } else
                             gameReleaseYear = JOptionPane.showInputDialog("Release year must be numeric (YYYY), please re-enter");
@@ -278,7 +346,7 @@ public class GameRental extends JFrame implements ActionListener {
         gameResults.setText("Game Details Found in the system:\n\n");
         try {
             if (this.games.size() == 0) {
-                JOptionPane.showMessageDialog(null, "No games have been found in the system. Please 'Open' the file.", "Error, no games found", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "No games have been found in the system. Please load a file", "Error, no games found", JOptionPane.ERROR_MESSAGE);
             } else {
                 Iterator<Game> gameIterator = this.games.iterator();
                 while (gameIterator.hasNext())
@@ -297,6 +365,8 @@ public class GameRental extends JFrame implements ActionListener {
             e.printStackTrace();
         }
         }
+
+
     public void removeGame(){
         JComboBox gamesList = new JComboBox();
         for(Game g : this.games)
@@ -352,7 +422,7 @@ public class GameRental extends JFrame implements ActionListener {
 
         mainMenuJMenuRemoveCustomer = new JMenuItem("Remove Customer");
         mainMenuJMenuCustomer.add(mainMenuJMenuRemoveCustomer);
-        mainMenuJMenuCustomer.addActionListener(this);
+        mainMenuJMenuRemoveCustomer.addActionListener(this);
         //GAMES JMENU
         mainMenuJMenuGames = new JMenu("Games");
         mainMenuJMenuBar.add(mainMenuJMenuGames);
@@ -492,6 +562,10 @@ public class GameRental extends JFrame implements ActionListener {
         else if(e.getSource() == this.mainMenuJMenuAddCustomer)
         {
             addCustomer();
+        }
+        else if(e.getSource() == this.mainMenuJMenuViewCustomer)
+        {
+            displayCustomer();
         }
         else if(e.getSource() == this.mainMenuJMenuRemoveCustomer)
         {
