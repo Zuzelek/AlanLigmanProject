@@ -12,11 +12,9 @@ import java.util.Objects;
 
 
 public class GameRental extends JFrame implements ActionListener {
-
-
     private String clock,date;
     private JFrame systemFrame;
-    private JButton addGameButton, removeGameButton,viewGameButton ;
+    private JButton addGameButton, removeGameButton,viewGameButton, findEmployee;
     private JPanel gamePanel;
     private JLabel logoImage;
     private JLabel clockLabel;
@@ -27,28 +25,21 @@ public class GameRental extends JFrame implements ActionListener {
     private JMenuItem mainMenuJMenuAddCustomer, mainMenuJMenuViewCustomer, mainMenuJMenuRemoveCustomer, mainMenuJMenuOpenFile, mainMenuJMenuSaveFile, mainMenuJMenuExit;
     private JMenuItem mainMenuJMenuAddGame, mainMenuJMenuViewGames, mainMenuJMenuRemoveGame;
     private JMenuItem mainMenuJMenuAddEmployee, mainMenuJMenuRemoveEmployee, mainMenuJMenuViewEmployee;
-
     Calendar calendar;
     SimpleDateFormat formatTime;
     SimpleDateFormat formatDate;
-
-
     private Game game;
     private Employee employee;
     private Customer customer;
-
     ArrayList<Game> games = new ArrayList<>();
     ArrayList<Employee> employees = new ArrayList<>();
     ArrayList<Customer> customers = new ArrayList<>();
 
-
-
-
     public GameRental() {
         systemFrame = new JFrame("Game System");
 
+        systemFrame.setIconImage(new ImageIcon("src/syslogo.png").getImage());
         displayJMenu();
-
 
         gamePanel = new JPanel();
         gamePanel.setLayout(null);
@@ -60,7 +51,6 @@ public class GameRental extends JFrame implements ActionListener {
         clockLabel.setBackground(Color.BLACK);
         gamePanel.add(clockLabel);
 
-        //NICKNAME LABEL
         nicknameLabel = new JLabel("Welcome Back!");
         nicknameLabel.setSize(120,20);
         nicknameLabel.setFont(new Font("Arial",Font.BOLD,16));
@@ -68,7 +58,6 @@ public class GameRental extends JFrame implements ActionListener {
         nicknameLabel.setLocation(180,150);
         gamePanel.add(nicknameLabel);
 
-        //ADD GAME BUTTON
         addGameButton = new JButton("Add Game");
         addGameButton.setMnemonic('A');
         addGameButton.setBackground(Color.LIGHT_GRAY);
@@ -79,7 +68,6 @@ public class GameRental extends JFrame implements ActionListener {
         addGameButton.addActionListener(this);
         gamePanel.add(addGameButton);
 
-        //REMOVE GAME BUTTON
         removeGameButton = new JButton("Remove Game");
         removeGameButton.setMnemonic(KeyEvent.VK_R);
         removeGameButton.setBackground(Color.LIGHT_GRAY);
@@ -89,7 +77,6 @@ public class GameRental extends JFrame implements ActionListener {
         removeGameButton.addActionListener(this);
         gamePanel.add(removeGameButton);
 
-        //VIEW GAME BUTTON
         viewGameButton = new JButton("View Games");
         viewGameButton.setMnemonic(KeyEvent.VK_V);
         viewGameButton.setBackground(Color.LIGHT_GRAY);
@@ -98,20 +85,21 @@ public class GameRental extends JFrame implements ActionListener {
         viewGameButton.addActionListener(this);
         gamePanel.add(viewGameButton);
 
-
         logoImage = new JLabel();
         logoImage.setIcon(new ImageIcon("src/gamePad.png"));
         logoImage.setBounds(60,100,350,450);
         gamePanel.add(logoImage);
 
-        //CLOCK LABEL
         displayClock();
+
+        findEmployee = new JButton("Find an Employee");
+        findEmployee.setBounds(100,500,125,50);
+        gamePanel.add(findEmployee);
 
         systemFrame.setSize(500, 700);
         systemFrame.setLocationRelativeTo(null);
         systemFrame.setResizable(false);
         systemFrame.add(gamePanel);
-
 
         systemFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         systemFrame.setVisible(true);
@@ -121,8 +109,6 @@ public class GameRental extends JFrame implements ActionListener {
 
         new GameRental();
     }
-
-
     public void addCustomer()
     {
         String firstName = JOptionPane.showInputDialog("Please enter your first name");
@@ -149,36 +135,34 @@ public class GameRental extends JFrame implements ActionListener {
                         {
                             if(dateOfBirth.length() == 12)
                             {
-                                if(Character.isDigit(dateOfBirth.charAt(0)) && (Character.isDigit(dateOfBirth.charAt(1))))
-                                int dobDay = Integer.parseInt(dateOfBirth.substring(0,2));
-                                int dobMonth = Integer.parseInt(dateOfBirth.substring(3,5));
-                                int dobYear = Integer.parseInt(dateOfBirth.substring(6,10));
-                                if()
-                                for (i = 0; i < address.length(); i++)
-                                    break;
-                                    if (Character.isDigit(phoneNumber.charAt(i)))
-                                    {
+                                if(Character.isDigit(dateOfBirth.charAt(0)) && (Character.isDigit(dateOfBirth.charAt(1))) && dateOfBirth.charAt(2) == '/'
+                                && (Character.isDigit(dateOfBirth.charAt(3))) && Character.isDigit(dateOfBirth.charAt(4))
+                                && dateOfBirth.charAt(5) == '/' && Character.isDigit(dateOfBirth.charAt(6)) && Character.isDigit(dateOfBirth.charAt(7))
+                                && Character.isDigit(dateOfBirth.charAt(8)) && Character.isDigit(dateOfBirth.charAt(9)))
+                                {
+                                    for (i = 0; i < address.length(); i++)
+                                        break;
+                                    if (Character.isDigit(phoneNumber.charAt(i))) {
                                         this.customer = new Customer(firstName, lastName, emailAddress, address, phoneNumber, dateOfBirth, password);
                                         JOptionPane.showMessageDialog(null, "Customer: " + firstName + " has been added to the system", "Customer Added", JOptionPane.INFORMATION_MESSAGE);
                                         valid = true;
                                     } else
                                         phoneNumber = JOptionPane.showInputDialog("Phone number must be numeric, please re-enter");
+                                }
+                                else
+                                    dateOfBirth = JOptionPane.showInputDialog("Date of birth must be in the format DD/MM/YYYY, please re-enter");
                             }
                             else
                                 dateOfBirth = JOptionPane.showInputDialog("Date of Birth must be 12 characters in length and in the format of DD/MM/YYYY, please re-enter");
-                                continue;
                         }
                         else
                             phoneNumber = JOptionPane.showInputDialog("Phone number must be 10 in length, please re-enter");
-                    continue;
                     }
                     else
                         password = JOptionPane.showInputDialog("Password must be between 8 and 15 characters, please re-enter");
-                    continue;
                 }
                 else
                     lastName = JOptionPane.showInputDialog("Last name cannot be empty, please re-enter");
-                    continue;
             }
             break;
         }
@@ -221,7 +205,6 @@ public class GameRental extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null,"Selected customer has been removed","Remove Customer",JOptionPane.INFORMATION_MESSAGE);
         }
     }
-
     public void addEmployee()
     {
         String firstName = JOptionPane.showInputDialog("Please enter employees first name");
@@ -292,7 +275,6 @@ public class GameRental extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null,"Selected employee has been removed","Remove Employee",JOptionPane.INFORMATION_MESSAGE);
         }
     }
-
     public void addGame(){
         String gameTitle = JOptionPane.showInputDialog("Please enter the game title: ");
         String gameReleaseYear = JOptionPane.showInputDialog("Please enter the release year (YYYY) ");
@@ -365,8 +347,6 @@ public class GameRental extends JFrame implements ActionListener {
             e.printStackTrace();
         }
         }
-
-
     public void removeGame(){
         JComboBox gamesList = new JComboBox();
         for(Game g : this.games)
@@ -383,11 +363,10 @@ public class GameRental extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null, "Selected game has been removed", "Game Removed", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-
     public void displayJMenu(){
         mainMenuJMenuBar = new JMenuBar();
         systemFrame.setJMenuBar(mainMenuJMenuBar);
-        //FILE JMENU
+
         mainMenuJMenuFiles = new JMenu("File");
         mainMenuJMenuBar.add(mainMenuJMenuFiles);
 
@@ -406,7 +385,6 @@ public class GameRental extends JFrame implements ActionListener {
         mainMenuJMenuFiles.add(mainMenuJMenuExit);
         mainMenuJMenuExit.addActionListener(this);
 
-        //CUSTOMERS JMENU
         mainMenuJMenuCustomer = new JMenu("Customers");
         mainMenuJMenuBar.add(mainMenuJMenuCustomer);
 
@@ -423,7 +401,7 @@ public class GameRental extends JFrame implements ActionListener {
         mainMenuJMenuRemoveCustomer = new JMenuItem("Remove Customer");
         mainMenuJMenuCustomer.add(mainMenuJMenuRemoveCustomer);
         mainMenuJMenuRemoveCustomer.addActionListener(this);
-        //GAMES JMENU
+
         mainMenuJMenuGames = new JMenu("Games");
         mainMenuJMenuBar.add(mainMenuJMenuGames);
 
@@ -440,7 +418,7 @@ public class GameRental extends JFrame implements ActionListener {
         mainMenuJMenuRemoveGame = new JMenuItem("Remove Game");
         mainMenuJMenuGames.add(mainMenuJMenuRemoveGame);
         mainMenuJMenuRemoveGame.addActionListener(this);
-        //CUSTOMERS JMENU
+
         mainMenuJMenuEmployee = new JMenu("Employees");
 
         mainMenuJMenuAddEmployee = new JMenuItem("Add Employee");
@@ -458,7 +436,6 @@ public class GameRental extends JFrame implements ActionListener {
         mainMenuJMenuRemoveEmployee.addActionListener(this);
 
         mainMenuJMenuBar.add(mainMenuJMenuEmployee);
-
     }
     public void displayClock(){
         clockLabel = new JLabel();
@@ -474,13 +451,11 @@ public class GameRental extends JFrame implements ActionListener {
         gamePanel.add(dateLabel);
     }
     public void rentalClock(){
-
         while(true) {
             formatTime = new SimpleDateFormat("kk:mm:ss");
             clock = formatTime.format(Calendar.getInstance().getTime());
             formatDate = new SimpleDateFormat("dd MMMM yyyy");
             date = formatDate.format(Calendar.getInstance().getTime());
-
         try {
             Thread.sleep(1000);
         }catch (InterruptedException e){
@@ -489,7 +464,6 @@ public class GameRental extends JFrame implements ActionListener {
             GameRental.this.clockLabel.setText(clock);
             GameRental.this.dateLabel.setText(date);
         }
-
     }
     public void saveSystem() throws IOException {
         FileOutputStream employeeOut = new FileOutputStream("EmployeeDetails.ser");
@@ -531,9 +505,6 @@ public class GameRental extends JFrame implements ActionListener {
         JOptionPane.showMessageDialog(null,"All Details have been loaded onto the system","Files Loaded",JOptionPane.INFORMATION_MESSAGE);
     }
     public void actionPerformed(ActionEvent e){
-
-
-        String menuOption = e.getActionCommand();
 
         if(e.getSource() == this.mainMenuJMenuAddGame || e.getSource() == this.addGameButton)
         {
@@ -594,7 +565,6 @@ public class GameRental extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null,"Goodbye!");
             System.exit(0);
         }
-
     }
 }
 

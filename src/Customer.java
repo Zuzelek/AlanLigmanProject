@@ -1,6 +1,11 @@
 import java.io.Serializable;
 import java.util.GregorianCalendar;
+//Customer.java
 
+/**
+ * An instantiable class which defines a Customer
+ * @author Alan Ligman
+ */
 public class Customer implements Serializable {
     private String firstName;
     private String surname;
