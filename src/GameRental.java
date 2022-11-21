@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
-import java.util.Objects;
 
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
@@ -50,11 +49,18 @@ public class GameRental extends JFrame implements ActionListener {
 
         systemFrame.setIconImage(new ImageIcon("src/syslogo.png").getImage());
         displayJMenu();
-        displayClock();
+
 
         gamePanel = new JPanel();
         gamePanel.setLayout(null);
         gamePanel.setBackground(Color.DARK_GRAY);
+
+        clockLabel = new JLabel();
+        clockLabel.setSize(100,30);
+        clockLabel.setLocation(10,20);
+        clockLabel.setBackground(Color.BLACK);
+        gamePanel.add(clockLabel);
+        displayClock();
 
         nicknameLabel = new JLabel("Welcome Back!");
         nicknameLabel.setSize(120,20);
@@ -98,6 +104,7 @@ public class GameRental extends JFrame implements ActionListener {
         findEmployee = new JButton("Find an Employee");
         findEmployee.setBounds(100,500,125,50);
         gamePanel.add(findEmployee);
+        findEmployee.addActionListener(this);
 
         systemFrame.setSize(500, 700);
         systemFrame.setLocationRelativeTo(null);
@@ -506,26 +513,28 @@ public class GameRental extends JFrame implements ActionListener {
 
         JOptionPane.showMessageDialog(null,"All Details have been loaded onto the system","Files Loaded",JOptionPane.INFORMATION_MESSAGE);
     }
-    private static int binarySearch(String employees[], String employee)
-    {
-        int lowerSub=0, higherSub = employees.length-1, middleSub;
+    /*public static int BinarySearch(ArrayList<String> employeeList, String target) {
+        int low = 0;
+        int high = employeeList.size() - 1;
+        int mid;
 
-        while(lowerSub < higherSub)
-        {
-            middleSub = (lowerSub+higherSub)/2;
+        while (low <= high) {
+            mid = (low + high)  / 2;
 
-            if(employees[middleSub] != null)
-                if(employees[middleSub].compareTo(employee) < 0)
-                    lowerSub = middleSub + 1;
-                else if (employees[middleSub].compareTo(employee) > 0)
-                    higherSub = middleSub - 1;
-                else
-                    return middleSub;
-            else
-                higherSub = middleSub - 1;
+            if (employeeList.get(mid).compareTo(target) < 0) {
+                low = mid + 1;
+            } else if (employeeList.get(mid).compareTo(target) > 0) {
+                high = mid - 1;
+            } else {
+                return mid;
+            }
         }
         return -1;
     }
+    public void findEmployee(){
+        String employeeFind = JOptionPane.showInputDialog("Please enter employees name that you wish to find");
+        int index = BinarySearch(employees,employeeFind);
+    }*/
     public void playAudio(){
         try {
             Media media = new Media(Paths.get(backgroundSong).toUri().toString());
@@ -597,6 +606,11 @@ public class GameRental extends JFrame implements ActionListener {
         {
             JOptionPane.showMessageDialog(null,"Goodbye!");
             System.exit(0);
+        }
+        else if(e.getSource() == this.findEmployee)
+        {
+            //findEmployee();
+            //int name = binarySearch()
         }
     }
 }
