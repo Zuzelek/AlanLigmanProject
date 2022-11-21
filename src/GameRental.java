@@ -4,11 +4,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.*;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Objects;
+
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 
 public class GameRental extends JFrame implements ActionListener {
@@ -28,6 +33,10 @@ public class GameRental extends JFrame implements ActionListener {
     Calendar calendar;
     SimpleDateFormat formatTime;
     SimpleDateFormat formatDate;
+
+    MediaPlayer mediaPlayer;
+    String backgroundSong = "src/backgroundMusic.mp3";
+    JFXPanel fxPanel = new JFXPanel();
     private Game game;
     private Employee employee;
     private Customer customer;
@@ -36,20 +45,16 @@ public class GameRental extends JFrame implements ActionListener {
     ArrayList<Customer> customers = new ArrayList<>();
 
     public GameRental() {
+        playAudio();
         systemFrame = new JFrame("Game System");
 
         systemFrame.setIconImage(new ImageIcon("src/syslogo.png").getImage());
         displayJMenu();
+        displayClock();
 
         gamePanel = new JPanel();
         gamePanel.setLayout(null);
         gamePanel.setBackground(Color.DARK_GRAY);
-        //CLOCK LABEL
-        clockLabel = new JLabel();
-        clockLabel.setSize(100,30);
-        clockLabel.setLocation(10,20);
-        clockLabel.setBackground(Color.BLACK);
-        gamePanel.add(clockLabel);
 
         nicknameLabel = new JLabel("Welcome Back!");
         nicknameLabel.setSize(120,20);
@@ -90,8 +95,6 @@ public class GameRental extends JFrame implements ActionListener {
         logoImage.setBounds(60,100,350,450);
         gamePanel.add(logoImage);
 
-        displayClock();
-
         findEmployee = new JButton("Find an Employee");
         findEmployee.setBounds(100,500,125,50);
         gamePanel.add(findEmployee);
@@ -106,7 +109,6 @@ public class GameRental extends JFrame implements ActionListener {
         rentalClock();
     }
     public static void main(String[] args) {
-
         new GameRental();
     }
     public void addCustomer()
@@ -504,6 +506,37 @@ public class GameRental extends JFrame implements ActionListener {
 
         JOptionPane.showMessageDialog(null,"All Details have been loaded onto the system","Files Loaded",JOptionPane.INFORMATION_MESSAGE);
     }
+    private static int binarySearch(String employees[], String employee)
+    {
+        int lowerSub=0, higherSub = employees.length-1, middleSub;
+
+        while(lowerSub < higherSub)
+        {
+            middleSub = (lowerSub+higherSub)/2;
+
+            if(employees[middleSub] != null)
+                if(employees[middleSub].compareTo(employee) < 0)
+                    lowerSub = middleSub + 1;
+                else if (employees[middleSub].compareTo(employee) > 0)
+                    higherSub = middleSub - 1;
+                else
+                    return middleSub;
+            else
+                higherSub = middleSub - 1;
+        }
+        return -1;
+    }
+    public void playAudio(){
+        try {
+            Media media = new Media(Paths.get(backgroundSong).toUri().toString());
+            mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.play();
+        }catch (Exception e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,"File "+backgroundSong+" could not be found","MP3 Error",JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     public void actionPerformed(ActionEvent e){
 
         if(e.getSource() == this.mainMenuJMenuAddGame || e.getSource() == this.addGameButton)
