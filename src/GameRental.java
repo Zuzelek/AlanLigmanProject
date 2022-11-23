@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.Map;
 
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
@@ -513,28 +514,7 @@ public class GameRental extends JFrame implements ActionListener {
 
         JOptionPane.showMessageDialog(null,"All Details have been loaded onto the system","Files Loaded",JOptionPane.INFORMATION_MESSAGE);
     }
-    /*public static int BinarySearch(ArrayList<String> employeeList, String target) {
-        int low = 0;
-        int high = employeeList.size() - 1;
-        int mid;
 
-        while (low <= high) {
-            mid = (low + high)  / 2;
-
-            if (employeeList.get(mid).compareTo(target) < 0) {
-                low = mid + 1;
-            } else if (employeeList.get(mid).compareTo(target) > 0) {
-                high = mid - 1;
-            } else {
-                return mid;
-            }
-        }
-        return -1;
-    }
-    public void findEmployee(){
-        String employeeFind = JOptionPane.showInputDialog("Please enter employees name that you wish to find");
-        int index = BinarySearch(employees,employeeFind);
-    }*/
     public void playAudio(){
         try {
             Media media = new Media(Paths.get(backgroundSong).toUri().toString());

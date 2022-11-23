@@ -10,7 +10,8 @@ public class Game implements Serializable {
     private String releaseYear;
     private String gameCategory;
     private String price;
-    public Game(String firstName, String lastName) {
+    private boolean borrowed;
+    public Game() {
         this("Unknown","Not given","Unknown","Unknown");
     }
 
@@ -22,6 +23,8 @@ public class Game implements Serializable {
         setGameCategory(gameCategory);
         setPrice(price);
     }
+
+
     //Mutator methods
     public void setTitle(String title) {
         this.title = title;
@@ -47,6 +50,16 @@ public class Game implements Serializable {
     }
     public String getPrice(){
         return price;
+    }
+
+    public void setToBorrowed(){
+        this.borrowed = true;
+    }
+    public void setToReturned(){
+        this.borrowed = false;
+    }
+    public boolean isBorrowed(){
+        return this.borrowed = true;
     }
     public String toString(){
         return "Game Title: "+getTitle() +
