@@ -46,6 +46,8 @@ public class GameRental extends JFrame implements ActionListener {
     ArrayList<Employee> employees = new ArrayList<>();
     ArrayList<Customer> customers = new ArrayList<>();
 
+    ArrayList<Rent> rents = new ArrayList<>();
+
     public GameRental() {
         playAudio();
         systemFrame = new JFrame("Game System");
@@ -613,8 +615,38 @@ public class GameRental extends JFrame implements ActionListener {
         }
         else if(e.getSource() == this.rentGame)
         {
-            //findEmployee();
-            //int name = binarySearch()
+            JComboBox<String> rentGame = new JComboBox();
+            JTextArea rentedGames = new JTextArea();
+            rentedGames.setText("Select a game you would like to rent:\n\n");
+            try {
+                if (this.games.size() == 0) {
+                    JOptionPane.showMessageDialog(null, "All games are currently rented", "Error, no games found", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    Iterator<Game> gameIterator = this.games.iterator();
+                    while (gameIterator.hasNext())
+                        rentGame.addItem(((Game) gameIterator.next()).getTitle() + "\n");
+                    int option = JOptionPane.showConfirmDialog(null, rentGame, "Would you like to rent this game?", JOptionPane.YES_NO_CANCEL_OPTION);
+
+                    int comboBoxSelection = rentGame.getSelectedIndex();
+                    rentedGames.append(((Game) this.games.get(comboBoxSelection)).toString());
+                    JOptionPane.showMessageDialog(null, rentedGames, "Rented Games", JOptionPane.NO_OPTION);
+
+                    if(option == JOptionPane.YES_OPTION){
+                        borrowGame(String.valueOf(comboBoxSelection));
+                        JOptionPane.showMessageDialog(null,"The game is now yours, it is rented for 7 days.","Game Rented",JOptionPane.INFORMATION_MESSAGE);
+                       // this.rents.add(this.games);
+                    }
+                    else if(option == JOptionPane.NO_OPTION){
+                        JOptionPane.showMessageDialog(null,"Rental cancelled","Cancelled",JOptionPane.INFORMATION_MESSAGE);
+                    }
+
+                }
+            }catch(NullPointerException ex)
+            {
+                JOptionPane.showMessageDialog(null,"Games could not be loaded","Error",JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+            }
+
         }
     }
 }
