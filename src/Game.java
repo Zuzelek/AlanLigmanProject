@@ -61,6 +61,9 @@ public class Game implements Serializable {
     public boolean isBorrowed(){
         return this.borrowed = true;
     }
+    public boolean isReturned(){
+        return this.borrowed = false;
+    }
     public String toString(){
         return "Game Title: "+getTitle() +
                 "\nRelease Year: "+getReleaseYear() +

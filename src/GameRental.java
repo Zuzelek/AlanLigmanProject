@@ -19,7 +19,7 @@ import javafx.scene.media.MediaPlayer;
 public class GameRental extends JFrame implements ActionListener {
     private String clock,date;
     private JFrame systemFrame;
-    private JButton addGameButton, removeGameButton,viewGameButton, findEmployee;
+    private JButton addGameButton, removeGameButton,viewGameButton, rentGame;
     private JPanel gamePanel;
     private JLabel logoImage;
     private JLabel clockLabel;
@@ -40,6 +40,8 @@ public class GameRental extends JFrame implements ActionListener {
     private Game game;
     private Employee employee;
     private Customer customer;
+    private Rent rent;
+
     ArrayList<Game> games = new ArrayList<>();
     ArrayList<Employee> employees = new ArrayList<>();
     ArrayList<Customer> customers = new ArrayList<>();
@@ -102,10 +104,10 @@ public class GameRental extends JFrame implements ActionListener {
         logoImage.setBounds(60,100,350,450);
         gamePanel.add(logoImage);
 
-        findEmployee = new JButton("Find an Employee");
-        findEmployee.setBounds(100,500,125,50);
-        gamePanel.add(findEmployee);
-        findEmployee.addActionListener(this);
+        rentGame = new JButton("Rent a Game");
+        rentGame.setBounds(100,500,125,50);
+        gamePanel.add(rentGame);
+        rentGame.addActionListener(this);
 
         systemFrame.setSize(500, 700);
         systemFrame.setLocationRelativeTo(null);
@@ -526,6 +528,28 @@ public class GameRental extends JFrame implements ActionListener {
         }
     }
 
+    public void borrowGame(String gameTitle){
+        for(Game g : this.games){
+            if(g.getTitle().equals(gameTitle)){
+                if(g.isBorrowed())
+                    JOptionPane.showMessageDialog(null,"Game borrowed","Borrowed",JOptionPane.INFORMATION_MESSAGE);
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"This game cannot be borrowed at this time, please try-again later.","Error",JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }
+    public void returnGame(String gameTitle){
+        for(Game g : this.games){
+            if(g.getTitle().equals(gameTitle)){
+                if(g.isReturned()){
+                    JOptionPane.showMessageDialog(null,"Game has been returned","Returned",JOptionPane.INFORMATION_MESSAGE);
+                }else{
+                    JOptionPane.showMessageDialog(null,"Game cannot be returned at this moment","Return Error",JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }
     public void actionPerformed(ActionEvent e){
 
         if(e.getSource() == this.mainMenuJMenuAddGame || e.getSource() == this.addGameButton)
@@ -587,7 +611,7 @@ public class GameRental extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null,"Goodbye!");
             System.exit(0);
         }
-        else if(e.getSource() == this.findEmployee)
+        else if(e.getSource() == this.rentGame)
         {
             //findEmployee();
             //int name = binarySearch()
