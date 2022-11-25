@@ -58,7 +58,7 @@ public class Authentication extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == this.login || e.getSource() == this.username || e.getSource() == passwordText || e.getSource() == userText) {
+            if (e.getSource() == this.login) {
                 String user = userText.getText();
                 String pass = passwordText.getText();
 
@@ -75,8 +75,6 @@ public class Authentication extends JFrame implements ActionListener {
                     this.username.setText("");
                     this.passwordText.setText("");
                 }
-
-
 
         }
     }

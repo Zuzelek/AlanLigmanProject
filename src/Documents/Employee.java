@@ -1,4 +1,4 @@
-package JavaDocClass;
+package Documents;
 
 import java.io.Serializable;
 //Employee.java
